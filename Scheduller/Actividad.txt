@@ -1,0 +1,16 @@
+1 Dummy.c agregar una nueva funcion para configurar como callback en 
+la inicializacion de PIT
+  void dummy_500us(void),
+2- En la funcion dummy_500us(void) agregar el control necesario para
+generar la llamada de las funciones definidas.
+(5,50,100,10 ms).
+
+3 las funciones Task_XXms, deben de ser proveidas en el archivo
+Dummy.c
+4 definir una funcion void dummy_endless_loop(void); en Dummy.c en la cual 
+se inicializan los apuntadores correspondientes y entre en un ciclo
+infinito.
+ ejemplo for(;;){}
+
+5 En main.c dentro de la funcion void main llamar la funcion dummy_endless_loop
+despues de haber inicializado los perifericos necesarios.
