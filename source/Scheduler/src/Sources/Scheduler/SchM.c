@@ -25,7 +25,8 @@
 /* Includes */
 /* -------- */
 #include "SchM.h"
-#include    "PIT.h"
+#include "PIT.h"
+#include "SchM_Cfg.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -48,10 +49,14 @@
 /*======================================================*/ 
 /* BYTE RAM variables */
 
+static T_UBYTE rub_index=0;
+
 SchedulerControlType SchedulerControl=
 {
-	0,TASK_BKG,SCHEDULER_INIT
+	0,TASK_BKG,SCHEDULER_UNINIT
 };
+
+const SchedulerConfigType *SchedulerConfigGlobal;
 
 /* WORD RAM variables */
 
@@ -72,7 +77,6 @@ extern SchedulerTCB SchedulerTCB_Task[6];
 
 void SchM_OsTick(void);
 void SchM_Background(void);
-void SchM_Task_1p56ms(void);
 
 /* Exported functions prototypes */
 /* ----------------------------- */
@@ -93,17 +97,18 @@ void SchM_Task_1p56ms(void);
  {
  	T_UBYTE lub_index;
  	
- 	PIT_device_init();
- 	PIT_channel_configure(PIT_CHANNEL_0 , SchM_OsTick);
+ 	SchedulerConfigGlobal=SchM_Config;
  	
- 	for(lub_index=0;lub_index<=6;lub_index++)
+ 	SchedulerControl.SchedulerStatus=SCHEDULER_INIT; 
+ 	 
+ 	for(lub_index=0;lub_index<SchM_Config->SchedulerNumberOfTasks;lub_index++)
  	{
  		SchedulerTCB_Task[lub_index].SchedulerTaskState=TASK_STATE_SUSPENDED;
- 		//SchedulerTCB_Task[lub_index].TaskFunctionControlPtr=SchM_Config->SchedulerTaskDescriptorType->TaskFunctionPtr;
- 		SchM_Config++;
+ 		SchedulerTCB_Task[lub_index].TaskFunctionControlPtr=SchM_Config->SchedulerTaskDescriptor[lub_index].TaskFunctionPtr;
  	}
  	
- 	SchedulerControl.SchedulerStatus=SCHEDULER_INIT;
+ 	PIT_device_init();
+ 	PIT_channel_configure(PIT_CHANNEL_0 , &SchM_OsTick);
  	
  }
  
@@ -137,8 +142,9 @@ void SchM_Task_1p56ms(void);
  **************************************************************/
  void SchM_Start(void)
  {
- 	PIT_channel_start(PIT_CHANNEL_0);
  	SchedulerControl.SchedulerStatus=SCHEDULER_RUNNING;
+ 	PIT_channel_start(PIT_CHANNEL_0);
+ 	enableIrq();   /* Enable External Interrupts*/
  	SchM_Background();
  }
  
@@ -155,7 +161,22 @@ void SchM_Task_1p56ms(void);
  **************************************************************/
  void SchM_OsTick(void)
  {
+ 	T_UBYTE lub_index;
  	SchedulerControl.SchedulerCounter++;
+ 	
+ 	for(lub_index=0;lub_index<SchedulerConfigGlobal->SchedulerNumberOfTasks;lub_index++)
+ 	{
+ 		if(((SchedulerConfigGlobal->SchedulerTaskDescriptor[lub_index].SchedulerTaskMask) & (SchedulerControl.SchedulerCounter)) == SchedulerConfigGlobal->SchedulerTaskDescriptor[lub_index].SchedulerTaskOffset)
+ 		{
+ 			SchedulerTCB_Task[lub_index].SchedulerTaskState=TASK_STATE_READY;
+ 		}
+ 		
+ 		else
+ 		{
+ 			//Do nothing
+ 		}
+ 	}
+ 	
  }
  
  
@@ -171,21 +192,22 @@ void SchM_Task_1p56ms(void);
  **************************************************************/
  void SchM_Background(void)
  {
- 	
- }
- 
- 
- 
-/* Private functions */
-/* ----------------- */
-/**************************************************************
- *  Name                 :	SchM_Task_1p56ms
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
- void SchM_Task_1p56ms(void)
- {
- 	
+ 	for(;;)
+ 	{
+ 		for(rub_index=0;rub_index<SchedulerConfigGlobal->SchedulerNumberOfTasks;rub_index++)
+ 		{
+ 			if(SchedulerTCB_Task[rub_index].SchedulerTaskState==TASK_STATE_READY)
+ 			{
+ 				SchedulerTCB_Task[rub_index].SchedulerTaskState=TASK_STATE_RUNNING;
+ 				SchedulerTCB_Task[rub_index].TaskFunctionControlPtr();
+ 				SchedulerTCB_Task[rub_index].SchedulerTaskState=TASK_STATE_SUSPENDED;
+ 				
+ 		    }
+ 		    
+ 		    else
+ 		    {
+ 		    	//Do nothing
+ 		    }
+ 		}
+ 	}  /* infinity for*/
  }

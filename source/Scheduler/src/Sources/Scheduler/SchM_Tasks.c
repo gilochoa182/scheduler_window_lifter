@@ -26,6 +26,8 @@
 /* -------- */
 
 #include "SchM_Tasks.h"
+#include "window_lifter.h"
+#include "GPIO.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -67,38 +69,96 @@
 /* ---------------------------- */
 
 
-
-/* Exported functions prototypes */
-/* ----------------------------- */
-
-/* Inline functions */
-/* ---------------- */
-/**************************************************************
- *  Name                 : inline_func	2
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
-
-
-/* Private functions */
+/* Exported functions */
 /* ----------------- */
 /**************************************************************
- *  Name                 : private_func
+ *  Name                 :	SchM_3p125ms_Task
  *  Description          :
  *  Parameters           :  [Input, Output, Input / output]
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
+ void SchM_3p125ms_Task(void)
+ {
+ 	
+ }
+
 
 
 /* Exported functions */
-/* ------------------ */
+/* ----------------- */
 /**************************************************************
- *  Name                 :	export_func
+ *  Name                 :	SchM_6p25ms_Task
  *  Description          :
  *  Parameters           :  [Input, Output, Input / output]
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
+ void SchM_6p25ms_Task(void)
+ {
+ 	
+ }
+ 
+ 
+ 
+ /* Exported functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 :	SchM_12p5ms_Task
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void SchM_12p5ms_Task(void)
+ {
+ 	
+ }
+ 
+ 
+ 
+  /* Exported functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 :	SchM_25ms_Task
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void SchM_25ms_Task(void)
+ {
+ 	
+ }
+ 
+ 
+ 
+   /* Exported functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 :	SchM_50ms_Task
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void SchM_50ms_Task(void)
+ {
+ 	
+ }
+ 
+ 
+ 
+   /* Exported functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 :	SchM_100ms_Task
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void SchM_100ms_Task(void)
+ {
+ 	LED_TOGGLE(LED1);	
+ }

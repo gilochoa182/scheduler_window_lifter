@@ -120,6 +120,7 @@ typedef struct
 	SchedulerTaskIDType SchedulerTaskRunning;
 	SchedulerStateType SchedulerStatus;	
 }SchedulerControlType;
+
 /*======================================================*/ 
 /* Definition of RAM variables                          */
 /*======================================================*/ 
