@@ -119,7 +119,7 @@ typedef struct{
 
 
 /*======================================================*/ 
-/* Definition of RAM variables                          */
+/* Definition of RAM variables                          */	
 /*======================================================*/ 
 /* BYTES */
 

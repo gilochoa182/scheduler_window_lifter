@@ -26,6 +26,7 @@
 /* Includes */
 /* -------- */
 #include "SchM.h"
+#include "PIT.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -48,18 +49,22 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
+const SchConfigType * rp_SchM_Config;
 
 
 /* WORD RAM variables */
 
 
 /* LONG and STRUCTURE RAM variables */
+SchControlType SchM_Control;
+
+SchTaskControlType *SchM_TaskControlPtr;
 
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
 /*======================================================*/ 
-
+	
 /* Private defines */
 
 
@@ -70,19 +75,6 @@
 
 /* Exported functions prototypes */
 /* ----------------------------- */
-extern void Sch_Init(SchControlType *Sch_Config);
-
-extern void Sch_Stop(void);
-
-extern void Sch_Start(void);
-
-void Sch_OsTick(void);
-
-void Sch_Background(void);
-
-//void Sch_Task_##period(void);
-
-void Sch_Task_1p56ms(void);
 
 
 /* Inline functions */
@@ -116,11 +108,22 @@ void Sch_Task_1p56ms(void);
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void Sch_Init(SchControlType *Sch_Config){
- 	T_UBYTE lub_SchPreset;
- 	for(lub_SchPreset = 0; lub_SchPreset<=6; lub_SchPreset++){
- 		
+ void SchM_Init(const SchConfigType *SchM_Config){
+ 	T_UBYTE lub_SchInitCounter;
+ 	
+ 	PIT_device_init();
+ 	PIT_channel_configure(PIT_CHANNEL_0, SchM_OsTick);	
+ 	
+    rp_SchM_Config = SchM_Config;
+	SchM_TaskControlPtr = (SchTaskControlType *)(sizeof(SchM_Config->SchNumberOfTask));
+
+ 	for(lub_SchInitCounter = 0; lub_SchInitCounter<=6; lub_SchInitCounter++){
+ 		SchM_TaskControlPtr[lub_SchInitCounter].SchTaskState = TASK_STATE_SUSPENDED; 
+		SchM_TaskControlPtr[lub_SchInitCounter].TaskFunctionControlPtr = SchM_Config[lub_SchInitCounter].SchTaskTable->TaskFunctionPtr;
  	}
+
+	SchM_Control.SchStatus = SCH_INIT;
+	SchM_Control.SchCounter = 0;
  }
 
 
@@ -131,7 +134,7 @@ void Sch_Task_1p56ms(void);
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void Sch_Stop(void){
+ void SchM_Stop(void){
  	
  }
  
@@ -143,7 +146,7 @@ void Sch_Task_1p56ms(void);
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void Sch_Start(void){
+ void SchM_Start(void){
  	
  }
  
@@ -155,10 +158,22 @@ void Sch_Task_1p56ms(void);
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void Sch_OsTick(void){
+ void SchM_OsTick(void){
+ 	T_UBYTE lub_SchInitCounter;
  	
- }
- 
+	const SchConfigType *lp_SchM_Config;
+	lp_SchM_Config = rp_SchM_Config;
+	SchM_Control.SchCounter++;
+	for(lub_SchInitCounter = 0; lub_SchInitCounter < lp_SchM_Config->SchNumberOfTask; lub_SchInitCounter++){
+		if( ((lp_SchM_Config+lub_SchInitCounter)->SchTaskTable->SchTaskMask & SchM_Control.SchCounter) == (lp_SchM_Config+lub_SchInitCounter)->SchTaskTable->SchTaskOffset ){
+			(SchM_TaskControlPtr+lub_SchInitCounter)->SchTaskState = TASK_STATE_READY;
+		}
+		else{
+			//Do nothing
+		}
+	}
+ }	
+
  
    /**************************************************************
  *  Name                 :	export_func
@@ -179,6 +194,6 @@ void Sch_Task_1p56ms(void);
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void Sch_Task_1p56ms(void){
+ void SchM_Task_1p56ms(void){
  	
  }

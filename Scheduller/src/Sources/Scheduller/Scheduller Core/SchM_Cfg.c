@@ -26,6 +26,7 @@
 /* Includes */
 /* -------- */
 #include "SchM_cfg.h"
+#include "SchM_Tasks.h"
 
 
 /* Functions macros, constants, types and datas         */

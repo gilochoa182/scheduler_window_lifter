@@ -23,8 +23,8 @@
 /* Integration under Continuus CM                                             */
 /*============================================================================*/
 
-#ifndef SCHM_H                               /* To avoid double inclusion */
-#define SCHM_H
+#ifndef __SCHM_H                               /* To avoid double inclusion */
+#define __SCHM_H
 
 /* Includes */
 /* -------- */
@@ -71,7 +71,20 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-void Sch_Init(SchControlType *Sch_Config);
+extern void SchM_Init(const SchConfigType *Sch_Config);
+
+extern void SchM_Stop(void);
+
+extern void SchM_Start(void);
+
+extern void SchM_OsTick(void);
+
+extern void SchM_Background(void);
+
+//void Sch_Task_##period(void);
+
+//void SchM_Task_1p56ms(void);
+
 
 /* Functions macros */
 
