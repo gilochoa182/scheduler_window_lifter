@@ -7,6 +7,7 @@
 #include    "PIT.h"
 #include    "dummy.h"
 #include "typedefs.h"
+#include "MemAlloc_Cfg.h"
 
 /*****************************************************************************************************
 * Definition of module wide VARIABLEs 
@@ -77,6 +78,7 @@ int main(void)
 	initModesAndClock();
 	/* Disable Watchdog */
 	disableWatchdog();
+	MemAllocInit(&MemAllocConfig);
 	/*Initialize LEDs on TRK-MPC560xB board */
 	vfnGPIO_LED_Init();	
 	/*Initialize Interrupts */

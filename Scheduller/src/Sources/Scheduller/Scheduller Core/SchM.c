@@ -70,17 +70,17 @@
 
 /* Exported functions prototypes */
 /* ----------------------------- */
-void Sch_Init(Sch_TaskConfigType *Sch_Config);
+extern void Sch_Init(SchControlType *Sch_Config);
 
-void Sch_Stop(void);
+extern void Sch_Stop(void);
 
-void Sch_Start(void);
+extern void Sch_Start(void);
 
 void Sch_OsTick(void);
 
 void Sch_Background(void);
 
-void Sch_Task_##period(void);
+//void Sch_Task_##period(void);
 
 void Sch_Task_1p56ms(void);
 
@@ -116,4 +116,69 @@ void Sch_Task_1p56ms(void);
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
+ void Sch_Init(SchControlType *Sch_Config){
+ 	T_UBYTE lub_SchPreset;
+ 	for(lub_SchPreset = 0; lub_SchPreset<=6; lub_SchPreset++){
+ 		
+ 	}
+ }
 
+
+/**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void Sch_Stop(void){
+ 	
+ }
+ 
+ 
+ /**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void Sch_Start(void){
+ 	
+ }
+ 
+ 
+  /**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void Sch_OsTick(void){
+ 	
+ }
+ 
+ 
+   /**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ /*void void Sch_Task_##period(void){
+ 	
+ }*/
+ 
+ 
+   /**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+ void Sch_Task_1p56ms(void){
+ 	
+ }

@@ -71,12 +71,13 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-
+void Sch_Init(SchControlType *Sch_Config);
 
 /* Functions macros */
 
 
 /* Exported defines */
+
 
 
 #endif

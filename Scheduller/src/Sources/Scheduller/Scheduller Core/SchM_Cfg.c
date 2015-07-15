@@ -38,7 +38,7 @@
 /* BYTE constants */
 
 const SchTaskTableType SchTaskTableConfig [] = {
-	/* Offset, Mask, Task ID, Function Ptr */
+	/* Offset, Mask,  Task ID,		 Function Ptr */
 	{0, MASK_3P125MS, TASK_3P125MS,  (void*)0},
 	{1, MASK_6P25MS,  TASK_6P25MS,   (void*)0},
 	{2, MASK_12P5MS,  TASK_12P5MS,   (void*)0},
