@@ -8,8 +8,8 @@
 * created_by:       Gilberto Ochoa
 * date_created:     Mon Jul 13 2015
 *=============================================================================*/
-/* DESCRIPTION : Header of the configuartion file of the                      */
-/* "Grandpa´s Clock Scheduler" core                                           */
+/* DESCRIPTION : Exports the general scheduler configuration                  */
+/*                                                                            */
 /*============================================================================*/
 /* FUNCTION COMMENT : Header of the configuration for the scheduler           */
 /*                                                                            */

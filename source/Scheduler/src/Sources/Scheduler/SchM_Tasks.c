@@ -25,6 +25,7 @@
 /* Includes */
 /* -------- */
 
+#include "SchM_Tasks.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */

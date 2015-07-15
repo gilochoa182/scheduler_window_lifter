@@ -8,7 +8,7 @@
 * created_by:       Gilberto Ochoa
 * date_created:     Mon Jul 13 2015
 *=============================================================================*/
-/* DESCRIPTION :                                                              */
+/* DESCRIPTION :   Scheduler module types                                     */
 /*============================================================================*/
 /* FUNCTION COMMENT :                                                         */
 /*                                                                            */
@@ -36,6 +36,8 @@
 /* Types definition */
 /* typedef */
 
+typedef void (*TaskFunctionPtrType)(void);
+typedef T_UBYTE SchedulerTaskOffsetType;
 
 /*==================================================*/ 
 /* Declaration of exported constants                */
@@ -47,11 +49,6 @@
 
 
 /* LONG and STRUCTURE constants */
-
-typedef void (*TaskFunctionPtrType)(void);
-typedef T_UBYTE SchedulerTaskOffsetType;
-
-
 
 typedef enum
 {
@@ -88,7 +85,7 @@ typedef struct
 {
 	SchedulerTaskStateType SchedulerTaskState;
 	TaskFunctionPtrType TaskFunctionControlPtr;
-}SchedulerTaskControlType;   /* TCB */
+}SchedulerTCB;   
 
 
 typedef struct

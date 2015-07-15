@@ -8,8 +8,9 @@
 * created_by:       Gilberto Ochoa
 * %date_created:    Mon Jul  13  2015
 *=============================================================================*/
-/* DESCRIPTION : Configuartion file of the "Grandpa´s Clock Scheduler" core   */
-/*============================================================================*/
+/* DESCRIPTION : Provides the general scheduler configuration and tasks       */
+/*               descriptor table                                             */
+/*=================================	==========================================*/
 /* FUNCTION COMMENT : Here is the table to configure the tasks of the system  */
 /*                                                                            */
 /*                                                                            */
@@ -26,6 +27,7 @@
 /* Includes */
 /* -------- */
 #include "SchM_Cfg.h"
+#include "SchM_Tasks.h"
 
 
 const SchedulerTaskDescriptorType SchedulerTaskDescConfig [] =
@@ -43,6 +45,10 @@ const SchedulerConfigType SchedulerConfig =
 {
 	(sizeof(SchedulerTaskDescConfig)/sizeof(SchedulerTaskDescConfig[0])),
 	SchedulerTaskDescConfig
+};
+
+SchedulerTCB SchedulerTCB_Task[6]=
+{
 };
 
 /* Functions macros, constants, types and datas         */

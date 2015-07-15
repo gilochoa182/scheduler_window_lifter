@@ -6,6 +6,8 @@
 #include    "GPIO.h"
 #include    "PIT.h"
 #include    "window_lifter.h"
+#include    "SchM_Cfg.h"
+#include    "MemAlloc_Cfg.h"
 
 /*****************************************************************************************************
 * Definition of module wide VARIABLEs 
@@ -74,6 +76,7 @@ int main(void)
 	initModesAndClock();
 	/* Disable Watchdog */
 	disableWatchdog();
+	MemAllocInit(&MemAllocConfig);
 	/*Initialize LEDs on TRK-MPC560xB board */
 	vfnGPIO_LED_Init();	
 	/*Initialize Interrupts */
@@ -81,12 +84,17 @@ int main(void)
 	/*Initialize Exception Handlers */
 	EXCEP_InitExceptionHandlers();
 	
+	/*
 	PIT_device_init();
     PIT_channel_configure(PIT_CHANNEL_0 , dummy_500us);	
     PIT_channel_start(PIT_CHANNEL_0);
+    */
     
     /* Enable External Interrupts*/
     enableIrq();
+    
+    SchM_Init(&SchedulerConfig);
+    
 	/* Infinite loop */
 	for (;;) 
 	{

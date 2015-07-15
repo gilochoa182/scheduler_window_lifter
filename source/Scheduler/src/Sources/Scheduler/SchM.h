@@ -8,7 +8,7 @@
 * created_by:       Gilberto Ochoa
 * date_created:     Mon Jul 13 2015
 *=============================================================================*/
-/* DESCRIPTION : Provides main functionality of the scheduler                 */
+/* DESCRIPTION : Exports the public scheduler interfaces                      */
 /*============================================================================*/
 /* FUNCTION COMMENT : OS Tick callback shall be allocated on those files      */
 /*                                                                            */
@@ -71,13 +71,10 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-void SchM_Init(SchedulerConfigType *SchM_Config);
-void SchM_DeInit(void);
-void SchM_Start(void);
-void SchM_OsTick(void);
-void SchM_Background(void);
-//void SchM_Task_##period(void);
-void SchM_Task_1p56ms(void);
+extern void SchM_Init(const SchedulerConfigType *SchM_Config);
+extern void SchM_Stop(void);
+extern void SchM_Start(void);
+
 
 /* Functions macros */
 
