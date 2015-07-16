@@ -36,6 +36,7 @@
 /*==================================================*/ 
 /* BYTE constants */
 
+const SchedulerConfigType *SchedulerConfigGlobal;
 
 /* WORD constants */
 
@@ -48,14 +49,14 @@
 /*======================================================*/ 
 /* BYTE RAM variables */
 
-static T_UBYTE rub_index=0;
+static T_UBYTE rub_index=POSITION_ZERO;
+
 
 SchedulerControlType SchedulerControl=
 {
-	0,TASK_BKG,SCHEDULER_UNINIT
+	ZERO_SECONDS,TASK_BKG,SCHEDULER_UNINIT
 };
 
-const SchedulerConfigType *SchedulerConfigGlobal;
 
 /* WORD RAM variables */
 

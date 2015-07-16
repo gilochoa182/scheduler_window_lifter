@@ -443,12 +443,12 @@ Memory map:
                .sdata2 40001370 00000000 00001020 00003020 00003020          0
                 .sbss2 40001370 00000000 00001020 00003020 00003020          0
                   .bss 40001370 00000020 00001020 00003020 00003020          0
-      .PPC.EMB.apuinfo 000075f4 00000000 00008620 0000a614 0000a614          0
+      .PPC.EMB.apuinfo 00006cd0 00000000 00007cf0 00009cf0 00009cf0          0
          .debug_abbrev          00000129 00001020
-           .debug_info          00002356 00001149
-           .debug_line          000039b5 0000349f
-            .debug_loc          0000052f 00006e54
-       .debug_pubnames          00000502 00007383
+           .debug_info          00001f7e 00001149
+           .debug_line          0000346b 000030c7
+            .debug_loc          0000052f 00006532
+       .debug_pubnames          00000502 00006a61
 
 
 Linker generated symbols:

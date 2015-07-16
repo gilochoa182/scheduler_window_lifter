@@ -77,8 +77,8 @@ typedef struct
 /* ---------------------------------------- */
 
 /* Functions prototypes */
+void Test_8second(void);
 void Test_4second(void);
-void Test_3second(void);
 void Test_2second(void);
 void Test_1second(void);
 void dummy_500us(void);

@@ -31,6 +31,11 @@
 
 #include "SchM_Types.h"
 
+
+/*-- Defines -----------------------------------------------------------------*/
+#define ZERO_SECONDS    0
+#define POSITION_ZERO   0
+
 /* Exported types and constants */
 /* ---------------------------- */
 

@@ -32,6 +32,14 @@
 
 #include "SchM.h"
 
+/*-- Defines -----------------------------------------------------------------*/
+#define ZERO    0
+#define ONE     1
+#define TWO     2
+#define THREE   3
+#define FIVE    5
+#define SIX     6
+
 /* Exported types and constants */
 /* ---------------------------- */
 
