@@ -88,15 +88,10 @@ int main(void)
 	/*Initialize Exception Handlers */
 	EXCEP_InitExceptionHandlers();
 	
-	/*PIT_device_init();
-    PIT_channel_configure(PIT_CHANNEL_0 , dummy_500us);	
-    PIT_channel_start(PIT_CHANNEL_0);*/
-    
-    /* Enable External Interrupts*/
-    enableIrq();
-	
 	/* Enable Scheduller */
 	SchM_Init(&SchConfig);
+	SchM_Start();
+	
 	
 	/* Infinite loop */
 	for (;;) 

@@ -98,7 +98,7 @@ void Test(void)
     
     rub_U16Counter++;
     
-    if (rub_U16Counter == 1000)
+    if (rub_U16Counter == 10)
     {
     	LED_TOGGLE(LED1);
     	rub_U16Counter = 0;	

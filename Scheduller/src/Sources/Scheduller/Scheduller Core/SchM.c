@@ -49,7 +49,14 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
+
+static T_UBYTE rub_SchInitCounter;
+
 const SchConfigType * rp_SchM_Config;
+
+SchControlType SchControl= {
+	0,TASK_BKG,SCH_UNINIT
+};
 
 
 /* WORD RAM variables */
@@ -70,7 +77,9 @@ SchTaskControlType *SchM_TaskControlPtr;
 
 /* Private functions prototypes */
 /* ---------------------------- */
+void SchM_Background(void);
 
+void SchM_OsTick(void);
 
 
 /* Exported functions prototypes */
@@ -109,20 +118,21 @@ SchTaskControlType *SchM_TaskControlPtr;
  *  Critical/explanation :    [yes / No]
  **************************************************************/
  void SchM_Init(const SchConfigType *SchM_Config){
- 	T_UBYTE lub_SchInitCounter;
- 	
- 	PIT_device_init();
- 	PIT_channel_configure(PIT_CHANNEL_0, SchM_OsTick);	
+ 	T_UBYTE lub_SchInitCounter;	
  	
     rp_SchM_Config = SchM_Config;
-	SchM_TaskControlPtr = (SchTaskControlType *)(sizeof(SchM_Config->SchNumberOfTask));
+    
+    SchM_Control.SchStatus = SCH_INIT;
+    
+	//SchM_TaskControlPtr = (SchTaskControlType *)(sizeof(SchM_Config->SchNumberOfTask));
 
  	for(lub_SchInitCounter = 0; lub_SchInitCounter<=6; lub_SchInitCounter++){
  		SchM_TaskControlPtr[lub_SchInitCounter].SchTaskState = TASK_STATE_SUSPENDED; 
 		SchM_TaskControlPtr[lub_SchInitCounter].TaskFunctionControlPtr = SchM_Config[lub_SchInitCounter].SchTaskTable->TaskFunctionPtr;
  	}
-
-	SchM_Control.SchStatus = SCH_INIT;
+	PIT_device_init();
+ 	PIT_channel_configure(PIT_CHANNEL_0, &SchM_OsTick);
+ 	
 	SchM_Control.SchCounter = 0;
  }
 
@@ -135,7 +145,8 @@ SchTaskControlType *SchM_TaskControlPtr;
  *  Critical/explanation :    [yes / No]
  **************************************************************/
  void SchM_Stop(void){
- 	
+ 	PIT_channel_stop(PIT_CHANNEL_0);
+ 	SchControl.SchStatus=SCH_HALTED;
  }
  
  
@@ -147,7 +158,10 @@ SchTaskControlType *SchM_TaskControlPtr;
  *  Critical/explanation :    [yes / No]
  **************************************************************/
  void SchM_Start(void){
- 	
+ 	PIT_channel_start(PIT_CHANNEL_0);
+ 	enableIrq();
+ 	SchControl.SchStatus=SCH_RUNNING;
+ 	SchM_Background();
  }
  
  
@@ -194,6 +208,16 @@ SchTaskControlType *SchM_TaskControlPtr;
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_Task_1p56ms(void){
- 	
+ void SchM_Background(void){
+ 	const SchConfigType *lp_SchM_Config;
+	lp_SchM_Config = rp_SchM_Config;
+ 	for(;;){
+ 		for(rub_SchInitCounter = 0; rub_SchInitCounter < lp_SchM_Config->SchNumberOfTask; rub_SchInitCounter++){
+ 			if((SchM_TaskControlPtr+rub_SchInitCounter)->SchTaskState == TASK_STATE_READY){
+ 				(SchM_TaskControlPtr+rub_SchInitCounter)->SchTaskState = TASK_STATE_RUNNING;
+ 				(SchM_TaskControlPtr+rub_SchInitCounter)->TaskFunctionControlPtr();
+ 				(SchM_TaskControlPtr+rub_SchInitCounter)->SchTaskState = TASK_STATE_SUSPENDED;
+ 			}
+ 		}
+ 	}
  }

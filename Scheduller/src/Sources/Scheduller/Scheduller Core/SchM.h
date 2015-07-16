@@ -77,10 +77,6 @@ extern void SchM_Stop(void);
 
 extern void SchM_Start(void);
 
-extern void SchM_OsTick(void);
-
-extern void SchM_Background(void);
-
 //void Sch_Task_##period(void);
 
 //void SchM_Task_1p56ms(void);

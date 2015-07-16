@@ -40,12 +40,12 @@
 
 const SchTaskTableType SchTaskTableConfig [] = {
 	/* Offset, Mask,  Task ID,		 Function Ptr */
-	{0, MASK_3P125MS, TASK_3P125MS,  (void*)0},
-	{1, MASK_6P25MS,  TASK_6P25MS,   (void*)0},
-	{2, MASK_12P5MS,  TASK_12P5MS,   (void*)0},
-	{3, MASK_25MS,    TASK_25MS,     (void*)0},
-	{5, MASK_50MS,    TASK_50MS,     (void*)0},
-	{6, MASK_100MS,   TASK_100MS,    (void*)0}
+	{0, MASK_3P125MS, TASK_3P125MS,  &SchM_3P125MS_Task},
+	{1, MASK_6P25MS,  TASK_6P25MS,   &SchM_6P25MS_Task},
+	{2, MASK_12P5MS,  TASK_12P5MS,   &SchM_12P5MS_Task},
+	{3, MASK_25MS,    TASK_25MS,     &SchM_25MS_Task},
+	{5, MASK_50MS,    TASK_50MS,     &SchM_50MS_Task},
+	{6, MASK_100MS,   TASK_100MS,    &SchM_100MS_Task}
 };
 
 const SchConfigType SchConfig = {

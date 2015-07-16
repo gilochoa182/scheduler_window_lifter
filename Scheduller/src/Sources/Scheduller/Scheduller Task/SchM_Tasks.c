@@ -102,4 +102,76 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
+void SchM_3P125MS_Task(void){
+	
+}
 
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+void SchM_6P25MS_Task(void){
+	
+}
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+void SchM_12P5MS_Task(void){
+	
+}
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+void SchM_25MS_Task(void){
+	
+}
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+void SchM_50MS_Task(void){
+	
+}
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	export_func
+ *  Description          :
+ *  Parameters           :  [Input, Output, Input / output]
+ *  Return               :
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+void SchM_100MS_Task(void){
+	Test();
+}
