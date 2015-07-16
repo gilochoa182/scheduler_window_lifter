@@ -26,7 +26,6 @@
 /* -------- */
 #include "SchM.h"
 #include "PIT.h"
-#include "SchM_Cfg.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -60,7 +59,7 @@ const SchedulerConfigType *SchedulerConfigGlobal;
 
 /* WORD RAM variables */
 
-extern SchedulerTCB SchedulerTCB_Task[6];
+SchedulerTCB *SchedulerTCB_Task;
 
 /* LONG and STRUCTURE RAM variables */
 
@@ -99,9 +98,11 @@ void SchM_Background(void);
  	
  	SchedulerConfigGlobal=SchM_Config;
  	
- 	SchedulerControl.SchedulerStatus=SCHEDULER_INIT; 
+ 	SchedulerControl.SchedulerStatus=SCHEDULER_INIT;
  	 
- 	for(lub_index=0;lub_index<SchM_Config->SchedulerNumberOfTasks;lub_index++)
+ 	SchedulerTCB_Task = (SchedulerTCB*)MemAlloc(SchedulerConfigGlobal->SchedulerNumberOfTasks*sizeof(SchedulerTCB));
+ 	 
+ 	for(lub_index=0;lub_index<SchedulerConfigGlobal->SchedulerNumberOfTasks;lub_index++)
  	{
  		SchedulerTCB_Task[lub_index].SchedulerTaskState=TASK_STATE_SUSPENDED;
  		SchedulerTCB_Task[lub_index].TaskFunctionControlPtr=SchM_Config->SchedulerTaskDescriptor[lub_index].TaskFunctionPtr;

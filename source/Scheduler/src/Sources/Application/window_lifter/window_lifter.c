@@ -112,19 +112,68 @@ void Task_100ms(void)
 
 
 
-void Test(void)
+void Test_4second(void)
 {
     static T_UWORD rub_U16Counter = 0;
     
     rub_U16Counter++;
     
-    if (rub_U16Counter == 1000)
+    if (rub_U16Counter == 40)
     {
     	LED_TOGGLE(LED1);
     	rub_U16Counter = 0;	
     }
 
 }
+
+
+
+void Test_3second(void)
+{
+    static T_UWORD rub_U16Counter = 0;
+    
+    rub_U16Counter++;
+    
+    if (rub_U16Counter == 60)
+    {
+    	LED_TOGGLE(LED2);
+    	rub_U16Counter = 0;	
+    }
+
+}
+
+
+void Test_2second(void)
+{
+    static T_UWORD rub_U16Counter = 0;
+    
+    rub_U16Counter++;
+    
+    if (rub_U16Counter == 80)
+    {
+    	LED_TOGGLE(LED3);
+    	rub_U16Counter = 0;	
+    }
+
+}
+
+
+
+void Test_1second(void)
+{
+    static T_UWORD rub_U16Counter = 0;
+    
+    rub_U16Counter++;
+    
+    if (rub_U16Counter == 80)
+    {
+    	LED_TOGGLE(LED4);
+    	rub_U16Counter = 0;	
+    }
+
+}
+
+
 
 void dummy_endless_loop(void)
 {

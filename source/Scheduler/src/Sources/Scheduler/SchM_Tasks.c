@@ -27,7 +27,6 @@
 
 #include "SchM_Tasks.h"
 #include "window_lifter.h"
-#include "GPIO.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -112,7 +111,7 @@
  **************************************************************/
  void SchM_12p5ms_Task(void)
  {
- 	
+ 	Test_1second();
  }
  
  
@@ -128,7 +127,7 @@
  **************************************************************/
  void SchM_25ms_Task(void)
  {
- 	
+ 	Test_2second();
  }
  
  
@@ -144,7 +143,7 @@
  **************************************************************/
  void SchM_50ms_Task(void)
  {
- 	
+ 	Test_3second();
  }
  
  
@@ -160,5 +159,5 @@
  **************************************************************/
  void SchM_100ms_Task(void)
  {
- 	LED_TOGGLE(LED1);	
+ 	Test_4second();	
  }

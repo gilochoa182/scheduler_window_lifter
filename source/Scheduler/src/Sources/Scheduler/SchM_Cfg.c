@@ -47,9 +47,7 @@ const SchedulerConfigType SchedulerConfig =
 	SchedulerTaskDescConfig
 };
 
-SchedulerTCB SchedulerTCB_Task[6]=
-{
-};
+
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
