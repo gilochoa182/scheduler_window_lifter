@@ -69,12 +69,12 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void SchM_3p125ms_Task(void);
-extern void SchM_6p25ms_Task(void);
-extern void SchM_12p5ms_Task(void);
-extern void SchM_25ms_Task(void);
-extern void SchM_50ms_Task(void);
-extern void SchM_100ms_Task(void);
+extern void SchM_1p25ms_Task(void);
+extern void SchM_2p5ms_Task(void);
+extern void SchM_5ms_Task(void);
+extern void SchM_10ms_Task(void);
+extern void SchM_20ms_Task(void);
+extern void SchM_40ms_Task(void);
 
 /* Functions macros */
 

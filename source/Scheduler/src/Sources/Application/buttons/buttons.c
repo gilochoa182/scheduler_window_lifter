@@ -3,15 +3,15 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:        GPIO,c         
-* version:         1.1
+* C Source:        buttons.c         
+* version:         1.2
 * created_by:      Gilberto Ochoa
 * date_created:    Mon Jun 22 2015
 *=============================================================================*/
-/* DESCRIPTION :                                                              */
+/* DESCRIPTION : C source template file                                       */
 /*============================================================================*/
-/* FUNCTION COMMENT : This file configurated GPIO as output and input         */
-/*                                                                            */
+/* FUNCTION COMMENT : This file works with the buttons selection              */
+/* Evaluate the rebound in the buttons                                        */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
@@ -24,6 +24,9 @@
 /*  1.1      | 30/06/2015  |                               | Gilberto Ochoa   */
 /* Organization of Private functions prototypes                               */
 /*============================================================================*/
+/*  1.2      | 10/07/2015  |                               | Gilberto Ochoa   */
+/* Optimize memory                                                            */
+/*============================================================================*/
 
 
 /*****************************************************************************************************
@@ -32,11 +35,11 @@
 
 /** Core modules */
 
-/** MCU derivative information */
-#include "MCU_derivative.h"
 /** Own headers */
-/* GPIO routines prototypes */ 
-#include "GPIO.h"
+#include "buttons.h"
+
+
+
 
 
 /* Functions macros, constants, types and datas         */
@@ -60,6 +63,7 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
+
 
 /* WORD RAM variables */
 
@@ -85,31 +89,33 @@
 /* Exported functions */
 /* ------------------ */
 /**************************************************************
- *  Name                 :	EmbIOs_Config
+ *  Name                 :	Evaluate_bounce_button
  *  Created by           :  Gilberto Ochoa
- *  Description          :  Configuration diferentes components Embedded
- *  Description          :  called periodically to operate.
+ *  Description          :  Evaluate if the button is pressed for more than 10 milliseconds
  *  Parameters           :  void
  *  Return               :  void
  *  Critical/explanation :  NO
  **************************************************************/
-void EmbIOs_Config(void)
+void Evaluate_bounce_button(T_UBYTE button)
 {
-	T_UBYTE lub_i;
-  
-    /* Set Port A as OUTPUT*/
-  	for(lub_i=0;lub_i<12;lub_i++)
-  	{
-  		SIU.PCR[lub_i].R = 0x200;	
-  	}
-  	
-  	SIU.GPDO[10].B.PDO = off;
-  	SIU.GPDO[11].B.PDO = off;
-  	
-  	
-  	/* Embedded board buttons seted as inputs */
-  	SIU.PCR[_BUTTON1].R = 0x100;	
-  	SIU.PCR[_BUTTON2].R = 0x100;
-  	SIU.PCR[_BUTTON3].R = 0x100;
-  	SIU.PCR[_BUTTON4].R = 0x100;	
-}
+	static T_UBYTE lub_time_button=0;
+	
+	if(button == BTN_PRESSED) 
+	{	
+		lub_time_button++;                       /*Increases time to 10 milliseconds*/
+		if(lub_time_button>=TEN_MILLISECONDS)
+		{
+			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/               
+		}
+		
+		else
+		{
+			//Do nothing
+		}
+	}
+			
+	else
+	{
+		lub_time_button=ZERO_MILLISECONDS;       /* Reset time*/
+	}
+}    /* End Evaluate_bounce_button*/

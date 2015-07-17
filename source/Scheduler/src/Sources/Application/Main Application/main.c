@@ -90,7 +90,7 @@ void main(void)
 	disableWatchdog();
 	MemAllocInit(&MemAllocConfig);
 	/*Initialize LEDs on TRK-MPC560xB board */
-	vfnGPIO_LED_Init();	
+		
 	/*Initialize Interrupts */
 	INTC_InitINTCInterrupts();
 	/*Initialize Exception Handlers */

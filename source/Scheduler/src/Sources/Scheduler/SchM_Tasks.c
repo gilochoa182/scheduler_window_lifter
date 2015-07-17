@@ -26,7 +26,6 @@
 /* -------- */
 
 #include "SchM_Tasks.h"
-#include "window_lifter.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -77,7 +76,7 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_3p125ms_Task(void)
+ void SchM_1p25ms_Task(void)
  {
  	
  }
@@ -93,7 +92,7 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_6p25ms_Task(void)
+ void SchM_2p5ms_Task(void)
  {
  	
  }
@@ -109,9 +108,9 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_12p5ms_Task(void)
+ void SchM_5ms_Task(void)
  {
- 	Test_1second();
+ 	
  }
  
  
@@ -125,9 +124,9 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_25ms_Task(void)
+ void SchM_10ms_Task(void)
  {
- 	Test_2second();
+ 	
  }
  
  
@@ -141,9 +140,9 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_50ms_Task(void)
+ void SchM_20ms_Task(void)
  {
- 	Test_4second();
+ 	
  }
  
  
@@ -157,7 +156,7 @@
  *  Return               :
  *  Critical/explanation :    [yes / No]
  **************************************************************/
- void SchM_100ms_Task(void)
+ void SchM_40ms_Task(void)
  {
- 	Test_8second();	
+ 	
  }

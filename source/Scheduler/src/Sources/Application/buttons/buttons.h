@@ -3,33 +3,36 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        window_lifter.h
+* C Include:        buttons.h
 * version:          1.0
 * created_by:       Gilberto Ochoa
-* date_created:     Mon Jul 13 2015
+* date_created:     Mon Jun 22 2015
 *=============================================================================*/
-/* DESCRIPTION : Header of the control window lifter                          */
+/* DESCRIPTION : Header of the button selector                                */
 /*============================================================================*/
-/* FUNCTION COMMENT : Header of the window_lifter.c file                      */
+/* FUNCTION COMMENT : Header of the button.c file                             */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Gilberto Ochoa   */
+/*  1.0      | 22/06/2015  |                               | Gilberto Ochoa   */
 /*                                                                            */
 /*============================================================================*/
 
-#ifndef _WINDOW_LIFTER_H        /*prevent duplicated includes*/
-#define _WINDOW_LIFTER_H
+#ifndef _BUTTONS_H        /* To avoid double inclusion */
+#define _BUTTONS_H
 
 /* Includes */
-
 #include "typedefs.h"
 
 /*-- Defines -----------------------------------------------------------------*/
 
+#define BTN_PRESSED                 0
+#define BTN_NOT_PRESSED             1
+#define ZERO_MILLISECONDS           0
+#define TEN_MILLISECONDS            10
 
 
 /* Exported types and constants */
@@ -45,11 +48,11 @@
 /* BYTE constants */
 
 
-
 /* WORD constants */
 
 
 /* LONG and STRUCTURE constants */
+
 
 
 /*======================================================*/ 
@@ -62,12 +65,7 @@
 
 
 /* LONGS and STRUCTURES */
-typedef struct
-{
-	T_UWORD ruw_Counter;
-	T_UWORD ruw_TopCount;
-	tCallbackFunction   cpfu_PerFunct; 
-} TASKSTRUCT;
+
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -77,24 +75,15 @@ typedef struct
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-void Test_8second(void);
-void Test_4second(void);
-void Test_2second(void);
-void Test_1second(void);
-void dummy_500us(void);
-void dummy_endless_loop(void);
-
-void Task_5ms(void);    /*Period = 5ms*/
-void Task_10ms(void);   /*Period = 10ms*/
-void Task_50ms(void);   /*Period = 50ms*/
-void Task_100ms(void);  /*Period = 100ms*/
+void Evaluate_bounce_button(T_UBYTE button);
 
 /* Functions macros */
+
 
 
 /* Exported defines */
 
 
-#endif /* _WINDOW_LIFTER_H */
+#endif /* _BUTTONS_H */
 
 /*******************************************************************************/

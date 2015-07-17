@@ -33,12 +33,12 @@
 const SchedulerTaskDescriptorType SchedulerTaskDescConfig [] =
 {
 	/* Offset,        MASK,           Task ID,       Function Pointer*/
-	{   ZERO,      MASK_3P125MS,    TASK_3P125MS,    &SchM_3p125ms_Task   },
-	{   ONE,       MASK_6P25MS,     TASK_6P25MS,     &SchM_6p25ms_Task    },
-	{   TWO,       MASK_12P5MS,     TASK_12P5MS,     &SchM_12p5ms_Task    },
-	{   THREE,     MASK_25MS,       TASK_25MS,       &SchM_25ms_Task      },
-	{   FIVE,      MASK_50MS,       TASK_50MS,       &SchM_50ms_Task      },
-	{   SIX,       MASK_100MS,      TASK_100MS,      &SchM_100ms_Task     }
+	{   ZERO,      MASK_1P25MS,    TASK_1P25MS,      &SchM_1p25ms_Task   },
+	{   ONE,       MASK_2P5MS,     TASK_2P5MS,       &SchM_2p5ms_Task    },
+	{   TWO,       MASK_5MS,       TASK_5MS,         &SchM_5ms_Task      },
+	{   THREE,     MASK_10MS,      TASK_10MS,        &SchM_10ms_Task     },
+	{   FIVE,      MASK_20MS,      TASK_20MS,        &SchM_20ms_Task     },
+	{   SIX,       MASK_40MS,      TASK_40MS,        &SchM_40ms_Task     }
 };
 
 const SchedulerConfigType SchedulerConfig = 

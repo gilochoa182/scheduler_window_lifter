@@ -1,170 +1,115 @@
-/*******************************************************************************/
-/**
-\file       GPIO.c
-\brief      General purpose IO functions
-\author     Abraham Tezmol
-\version    1.0
-\date       31/10/2008
-*/
-/****************************************************************************************************/
+/*============================================================================*/
+/*                        SV C CE SOFTWARE GROUP                              */
+/*============================================================================*/
+/*                        OBJECT SPECIFICATION                                */
+/*============================================================================*
+* C Source:        GPIO,c         
+* version:         1.1
+* created_by:      Gilberto Ochoa
+* date_created:    Mon Jun 22 2015
+*=============================================================================*/
+/* DESCRIPTION :                                                              */
+/*============================================================================*/
+/* FUNCTION COMMENT : This file configurated GPIO as output and input         */
+/*                                                                            */
+/*                                                                            */
+/*============================================================================*/
+/*                               OBJECT HISTORY                               */
+/*============================================================================*/
+/*  REVISION |   DATE      |                               |      AUTHOR      */
+/*----------------------------------------------------------------------------*/
+/*  1.0      | 22/06/2015  |                               | Gilberto Ochoa   */
+/* Start of this file                                                         */
+/*============================================================================*/
+/*  1.1      | 30/06/2015  |                               | Gilberto Ochoa   */
+/* Organization of Private functions prototypes                               */
+/*============================================================================*/
+
 
 /*****************************************************************************************************
 * Include files
 *****************************************************************************************************/
 
 /** Core modules */
+
 /** MCU derivative information */
 #include "MCU_derivative.h"
-/** Variable types and common definitions */
-#include "typedefs.h"
-
 /** Own headers */
 /* GPIO routines prototypes */ 
 #include "GPIO.h"
 
-/** Used modules */
+
+/* Functions macros, constants, types and datas         */
+/* ---------------------------------------------------- */
+/* Functions macros */
+
+/*==================================================*/ 
+/* Definition of constants                          */
+/*==================================================*/ 
+/* BYTE constants */
 
 
-/*****************************************************************************************************
-* Definition of module wide VARIABLEs 
-*****************************************************************************************************/
-
-/*****************************************************************************************************
-* Declaration of module wide FUNCTIONs 
-*****************************************************************************************************/
-
-/*****************************************************************************************************
-* Definition of module wide MACROs / #DEFINE-CONSTANTs 
-*****************************************************************************************************/
-
-/*****************************************************************************************************
-* Declaration of module wide TYPEs 
-*****************************************************************************************************/
-
-/*****************************************************************************************************
-* Definition of module wide (CONST-) CONSTANTs 
-*****************************************************************************************************/
-
-/*****************************************************************************************************
-* Code of module wide FUNCTIONS
-*****************************************************************************************************/
+/* WORD constants */
 
 
-/****************************************************************************************************/
-/**
-* \brief    Configures individual GPIO pins to either input or output functionality.  
-* \author   Abraham Tezmol
-* \param    uint8_t channel - GPIO channel to be configured
-* \param    uint8_t input_output - selection of input/output functionality (has impact on output impedance selection)
-* \param    uint8_t Open_drain - Push pull or open drain selection modes 
-* \return   void
-*/
+/* LONG and STRUCTURE constants */
 
-void vfnGPIO_Init_channel(uint8_t channel, uint8_t input_output, uint8_t Open_drain)
+
+
+/*======================================================*/ 
+/* Definition of RAM variables                          */
+/*======================================================*/ 
+/* BYTE RAM variables */
+
+/* WORD RAM variables */
+
+
+/* LONG and STRUCTURE RAM variables */
+
+
+/*======================================================*/ 
+/* close variable declaration sections                  */
+/*======================================================*/ 
+
+/* Private defines */
+
+
+/* Private functions prototypes */
+/* ---------------------------- */
+
+
+/* Exported functions prototypes */
+/* ----------------------------- */
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	EmbIOs_Config
+ *  Created by           :  Gilberto Ochoa
+ *  Description          :  Configuration diferentes components Embedded
+ *  Description          :  called periodically to operate.
+ *  Parameters           :  void
+ *  Return               :  void
+ *  Critical/explanation :  NO
+ **************************************************************/
+void EmbIOs_Config(void)
 {
-    if (input_output == GPIO_OUTPUT)
-    {
-    	SIU.PCR[channel].B.PA  = 0;  				/* GPIO */
-    	SIU.PCR[channel].B.OBE = 1;					/* Output buffer enable */
-    	if (Open_drain == GPIO_OPEN_DRAIN_ENABLE)
-    	{
-    		SIU.PCR[channel].B.ODE = 1;				/* Open drain option enable */	
-    	}
-    	else
-    	{	
-    		SIU.PCR[channel].B.ODE = 0;				/* Push-pull option enable */	
-    	}
-    }
-    else if (input_output == GPIO_INPUT)
-    {
-    	SIU.PCR[channel].B.PA  = 0;  				/* GPIO */
-    	SIU.PCR[channel].B.IBE = 1;					/* Input buffer enable */	
-    }
-
+	T_UBYTE lub_i;
+  
+    /* Set Port A as OUTPUT*/
+  	for(lub_i=0;lub_i<12;lub_i++)
+  	{
+  		SIU.PCR[lub_i].R = 0x200;	
+  	}
+  	
+  	SIU.GPDO[10].B.PDO = off;
+  	SIU.GPDO[11].B.PDO = off;
+  	
+  	
+  	/* Embedded board buttons seted as inputs */
+  	SIU.PCR[_BUTTON1].R = 0x100;	
+  	SIU.PCR[_BUTTON2].R = 0x100;
+  	SIU.PCR[_BUTTON3].R = 0x100;
+  	SIU.PCR[_BUTTON4].R = 0x100;	
 }
-
-/****************************************************************************************************/
-/**
-* \brief    Configures individual GPIO pins to either input or output functionality.  
-* \author   Abraham Tezmol
-* \param    uint8_t channel - GPIO channel to be configured
-* \param    uint8_t input_output - selection of input/output functionality (has impact on output impedance selection)
-* \param    uint8_t Open_drain - Push pull or open drain selection modes 
-* \return   void
-*/
-void vfnGPIO_Output(uint8_t channel, uint8_t logical_value)
-{
-    SIU.GPDO[channel].B.PDO  = logical_value;  		/* Drive the logical output value to the pin */
-
-}
-
-
-
-/****************************************************************************************************/
-/**
-* \brief    Turn a combination of 3 LEDs with a unique blinking pattern, this funcation shall be 
-* \brief    called periodically to operate. 
-* \author   Abraham Tezmol
-* \param    void
-* \return   void
-*/
-void vfnGPIO_FlashMainLED(void)
-{
-    static uint8_t u8Counter = 0;
-    
-    u8Counter++;
-    switch (u8Counter)
-    {
-    case  1:
-            LED_ON(LED1);
-            LED_ON(LED2);
-            break;
-    case  11:
-            LED_ON(LED3);
-            LED_ON(LED4);                     
-            break;
-    case  21:
-            LED_ON(LED2);
-            LED_ON(LED3);                     
-            break;        
-    case  3:
-            LED_OFF(LED1);
-            LED_OFF(LED2);
-            break;
-    case  13:
-            LED_OFF(LED3);
-            LED_OFF(LED4);
-            break;                          
-    case  23:
-            LED_OFF(LED2);
-            LED_OFF(LED3);
-            break;        
-	case 100:
-		u8Counter = 0;
-		break;
-    }
-}
-
-
-/****************************************************************************************************/
-/**
-* \brief    Initialize GPIO port connected to LEDs on eval board
-* \author   Abraham Tezmol
-* \param    void 
-* \return   void
-*/
-void vfnGPIO_LED_Init(void)
-{
-    /* Data Port A initialization */
-	vfnGPIO_Init_channel(LED1,GPIO_OUTPUT,GPIO_OPEN_DRAIN_ENABLE);  /* PE4 --> LED1*/
-	vfnGPIO_Output (LED1, 1);
-	vfnGPIO_Init_channel(LED2,GPIO_OUTPUT,GPIO_OPEN_DRAIN_ENABLE);  /* PE5 --> LED2*/
-	vfnGPIO_Output (LED2, 1);
-	vfnGPIO_Init_channel(LED3,GPIO_OUTPUT,GPIO_OPEN_DRAIN_ENABLE);  /* PE6 --> LED3*/
-	vfnGPIO_Output (LED3, 1);
-	vfnGPIO_Init_channel(LED4,GPIO_OUTPUT,GPIO_OPEN_DRAIN_ENABLE);  /* PE7 --> LED4*/
-	vfnGPIO_Output (LED4, 1);
-	
-}
-
-/****************************************************************************************************/
