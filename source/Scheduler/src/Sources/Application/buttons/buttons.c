@@ -39,9 +39,6 @@
 #include "buttons.h"
 
 
-
-
-
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
 /* Functions macros */
