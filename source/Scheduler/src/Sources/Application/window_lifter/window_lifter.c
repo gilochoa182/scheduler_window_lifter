@@ -36,14 +36,38 @@
 
 #include "button.h"
 
+
+/*-- Defines -----------------------------------------------------------------*/
+
+#define ZERO_MILLISECONDS           0
+#define FIVE_HUNDRED_MILLISECONDS   100
+#define FOUR_HUNDRED_MILLISECONDS   80
+#define FIVE_SECONDS                125
+#define TOTALLY_CLOSED              255
+#define TOTALLY_OPEN                10
+
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
+
+typedef enum
+{
+	IDLE,
+	VALIDATION,
+	MANUAL_UP,
+	MANUAL_DOWN,
+	AUTOMATIC_UP,
+	AUTOMATIC_DOWN,
+	ANTIPINCH,
+	LOCK
+}StateMachineType;
+
 /* Functions macros */
 
 /*==================================================*/ 
 /* Definition of constants                          */
 /*==================================================*/ 
 /* BYTE constants */
+
 
 
 /* WORD constants */
@@ -57,7 +81,11 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
-T_UBYTE rub_State=IDLE, rub_LED_Position=_LED1;
+
+StateMachineType rub_State=IDLE;
+
+T_UBYTE rub_LED_Position=_LED1;
+
 extern ButtonStateType status_button;
 
 
@@ -80,13 +108,14 @@ void window_up(void);
 void window_down(void);
 void manual_up(void);
 void manual_down(void);
-void Selector_up(void);
-void Selector_down(void);
+void automatic_up(void);
+void automatic_down(void);
 void aintipinch(void);
 void delay_5_seconds(void);
+void validation(void);
 
 
-/* Exported functions */
+/* Private functions */
 /* ------------------ */
 /**************************************************************
  *  Name                 :	State_Machine
@@ -101,18 +130,16 @@ void State_Machine(void)
 	switch(rub_State)
 	{
 		case IDLE:
-			if(status_button==BUTTON_DOWN_PRESS)
-			{
-				rub_State=SELECTOR_DOWN;
-			}
-			
-			else if(status_button==BUTTON_UP_PRESS)
-			{
-				rub_State=SELECTOR_UP;
-			}
+			ruw_time_button=ZERO_MILLISECONDS;
+			ruw_time_transition=ZERO_MILLISECONDS;
+			rub_State=VALIDATION;
 			break;
 			
-		
+		case VALIDATION:
+			validation();
+			break;
+			
+			
 		case MANUAL_UP:
 			manual_up();
 			break;
@@ -123,13 +150,13 @@ void State_Machine(void)
 			break;
 			
 			
-		case SELECTOR_UP:
-			Selector_up();
+		case AUTOMATIC_UP:
+			automatic_up();
 			break;
 			
 			
-		case SELECTOR_DOWN:
-			Selector_down();
+		case AUTOMATIC_DOWN:
+			automatic_down();
 			break;
 			
 			
@@ -137,12 +164,158 @@ void State_Machine(void)
 			aintipinch();
 			break;
 			
-		case DELAY_5_SECONDS:
-			delay_5_seconds();
+		case LOCK:
+			
 			break;
 	}  /* End switch */
 	
 }        /* End State_Machine */
+
+
+/* Private functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 : validation
+ *  Created by           : Gilberto Ochoa
+ *  Description          : 
+ *  Parameters           : Void
+ *  Return               : Void
+ *  Critical/explanation : No
+ **************************************************************/
+void validation(void)
+{
+	if(status_button==BUTTON_DOWN_PRESS)
+	{
+		rub_State=AUTOMATIC_DOWN;
+	}
+			
+	else if(status_button==BUTTON_UP_PRESS)
+	{
+		rub_State=AUTOMATIC_UP;
+	}
+	
+	else if((status_button==SIGNAL_ANTIPINCH)&&((rub_State==AUTOMATIC_UP)||(rub_State==MANUAL_UP)))
+	{
+		rub_State=ANTIPINCH;
+	}
+			
+	else
+	{
+		rub_State=IDLE;
+	}
+}
+
+
+
+/* Private functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 : automatic_up
+ *  Created by           : Gilberto Ochoa
+ *  Description          : Evaluate the time that the button was pressed to select (Manual or Automatic)
+ *  Parameters           : Void
+ *  Return               : Void
+ *  Critical/explanation : No
+ **************************************************************/
+void automatic_up(void)
+{
+	if(status_button==BUTTON_UP_PRESS)        /* Evaluate if the button continues pressed TO MANUAL MODE */
+	{
+		ruw_time_button++;
+		if(ruw_time_button>FIVE_HUNDRED_MILLISECONDS) 
+		{
+			ruw_time_button=ZERO_MILLISECONDS;
+			rub_State=MANUAL_UP;
+		}
+		
+		else
+		{
+			//Do nothing
+		}
+	}
+	
+	else                                /* AUTOMATIC MODE */
+	{
+		ruw_time_button=ZERO_MILLISECONDS;
+		window_up();
+		
+		if(rub_LED_Position==TOTALLY_CLOSED)
+		{
+			rub_State=IDLE;
+			rub_LED_Position=_LED1;
+			LED_OFF(_LED_UP);
+		}	
+			
+		else
+		{
+			//Do nothing
+		}	
+	}
+	
+	if(status_button==BUTTON_DOWN_PRESS)     
+	{
+		rub_State=MANUAL_DOWN;
+	}
+			
+}   /*************** End function automatic_up_action ***************/
+
+
+
+/* Private functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 : automatic_down
+ *  Created by           : Gilberto Ochoa
+ *  Description          : Evaluate the time that the button was pressed to select (Manual or Automatic)
+ *  Parameters           : Void
+ *  Return               : Void
+ *  Critical/explanation : No
+ **************************************************************/
+void automatic_down(void)
+{
+	if(status_button==BUTTON_DOWN_PRESS)         /* Evaluate if the button continues pressed TO MANUAL MODE */
+	{
+		ruw_time_button++;
+		if(ruw_time_button>FIVE_HUNDRED_MILLISECONDS)
+		{
+			ruw_time_button=ZERO_MILLISECONDS;
+			rub_State=MANUAL_DOWN;
+		}
+		
+		else
+		{
+			//Do nothing
+		}
+	}
+	
+	else                            /* AUTOMATIC MODE */
+	{
+		ruw_time_button=ZERO_MILLISECONDS;
+		window_down();
+		
+		if(rub_LED_Position==TOTALLY_OPEN)
+		{
+			rub_State=IDLE;
+			rub_LED_Position=_LED10;
+			LED_OFF(_LED_DOWN);
+		}
+		
+		else
+		{
+			//Do nothing
+		}	
+	}
+	
+	if(status_button==BUTTON_UP_PRESS)
+	{
+		rub_State=MANUAL_UP;
+	}
+	
+	else
+	{
+		//Do nothing
+	}
+}  /*************** End function automatic_down_action ***************/
 
 
 
@@ -158,42 +331,20 @@ void State_Machine(void)
  **************************************************************/
 void window_down(void)
 {
-	if(BUTTON_UP == BTN_ACTIVE)
+	LED_OFF(_LED_UP);
+	ruw_time_transition++;
+	if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position<=_LED10))
 	{
-		LED_OFF(_LED_DOWN);
-		rub_State=MANUAL_DOWN;
-		ruw_time_button=ZERO_MILLISECONDS;
-	}    /* End Evaliation Button Stop */
-	
+		LED_ON(_LED_DOWN);
+		LED_OFF(rub_LED_Position);
+		rub_LED_Position++;
+		ruw_time_transition=ZERO_MILLISECONDS;
+	}
+		
 	else
 	{
-		ruw_time_transition++;
-		if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position<=_LED10))
-		{
-			LED_ON(_LED_DOWN);
-			LED_OFF(rub_LED_Position);
-			rub_LED_Position++;
-			ruw_time_transition=ZERO_MILLISECONDS;
-		}
-		
-		else
-		{
-			//Do nothing
-		}
-			
-		if(rub_LED_Position==OPEN)
-		{
-			rub_State=IDLE;
-			rub_LED_Position=_LED10;
-			ruw_time_button=ZERO_MILLISECONDS;
-			LED_OFF(_LED_DOWN);
-		}
-		
-		else
-		{
-			//Do nothing
-		}
-	}   /* End ELSE Evaliation Button Stop */	
+		//Do nothing
+	}	
 	
 }  /*************** End function window_down ***************/
 
@@ -211,6 +362,7 @@ void window_down(void)
  **************************************************************/
 void window_up(void)
 {	
+	LED_OFF(_LED_DOWN);
 	if(ANTI_PINCH==BTN_ACTIVE)
 	{
 		ruw_time_button=ZERO_MILLISECONDS;
@@ -219,42 +371,20 @@ void window_up(void)
 	
 	else
 	{	
-		if(BUTTON_DOWN == BTN_ACTIVE)
+		ruw_time_transition++;
+		if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position>=_LED1))
 		{
-			LED_OFF(_LED_UP);
-			rub_State=MANUAL_UP;
-			ruw_time_button=ZERO_MILLISECONDS;
-		}    /* End Evaliation Button Stop */
-	
+			LED_ON(_LED_UP);
+			LED_ON(rub_LED_Position);
+			rub_LED_Position--;
+			ruw_time_transition=ZERO_MILLISECONDS;
+		}
+			
 		else
 		{
-			ruw_time_transition++;
-			if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position>=_LED1))
-			{
-				LED_ON(_LED_UP);
-				LED_ON(rub_LED_Position);
-				rub_LED_Position--;
-				ruw_time_transition=ZERO_MILLISECONDS;
-			}
-			
-			else
-			{
-				//Do nothing
-			}
-			
-			if(rub_LED_Position==CLOSED)
-			{
-				rub_State=IDLE;
-				rub_LED_Position=_LED1;
-				ruw_time_button=ZERO_MILLISECONDS;
-				LED_OFF(_LED_UP);
-			}	
-			
-			else
-			{
-				//Do nothing
-			}
+			//Do nothing
 		}
+			
 	}
 	
 }  /*************** End function window_up ***************/
@@ -273,14 +403,26 @@ void window_up(void)
  **************************************************************/
 void manual_up(void)
 {
-	if((BUTTON_UP == BTN_ACTIVE) || (BUTTON_DOWN == BTN_ACTIVE))
+	if(status_button==BUTTON_UP_PRESS)
 	{
 		window_up();
+		
+		if(rub_LED_Position==TOTALLY_CLOSED)
+		{
+			rub_State=IDLE;
+			rub_LED_Position=_LED1;
+			ruw_time_button=ZERO_MILLISECONDS;
+			LED_OFF(_LED_UP);
+		}	
+			
+		else
+		{
+			//Do nothing
+		}
 	}
 			
 	else
 	{
-		ruw_time_button=ZERO_MILLISECONDS;
 		rub_State=IDLE;	
 		LED_OFF(_LED_UP);	
 	}	
@@ -300,87 +442,30 @@ void manual_up(void)
  **************************************************************/
 void manual_down(void)
 {
-	if((BUTTON_DOWN == BTN_ACTIVE) || (BUTTON_UP == BTN_ACTIVE))
+	if(status_button==BUTTON_DOWN_PRESS)
 	{
 		window_down();
+		
+		if(rub_LED_Position==TOTALLY_OPEN)
+		{
+			rub_State=IDLE;
+			rub_LED_Position=_LED10;
+			ruw_time_button=ZERO_MILLISECONDS;
+			LED_OFF(_LED_DOWN);
+		}
+		
+		else
+		{
+			//Do nothing
+		}
 	}
 			
 	else
 	{
-		ruw_time_button=ZERO_MILLISECONDS;
 		rub_State=IDLE;	
 		LED_OFF(_LED_DOWN);	
 	}
 }    /*************** End function manual_down ***************/
-
-
-
-/* Private functions */
-/* ----------------- */
-/**************************************************************
- *  Name                 : Selector_up
- *  Created by           : Gilberto Ochoa
- *  Description          : Evaluate the time that the button was pressed to select (Manual or Automatic)
- *  Parameters           : Void
- *  Return               : Void
- *  Critical/explanation : No
- **************************************************************/
-void Selector_up(void)
-{
-	if(BUTTON_UP == BTN_ACTIVE)
-	{
-		ruw_time_button++;
-		if((ruw_time_button>FIVE_HUNDRED_MILLISECONDS) && (BUTTON_UP == BTN_ACTIVE))
-		{
-			rub_State=MANUAL_UP;
-		}
-		
-		else
-		{
-			//Do nothing
-		}
-	}
-	
-	else
-	{
-		window_up();	
-	}
-			
-}   /*************** End function automatic_up_action ***************/
-
-
-
-/* Private functions */
-/* ----------------- */
-/**************************************************************
- *  Name                 : Selector_down
- *  Created by           : Gilberto Ochoa
- *  Description          : Evaluate the time that the button was pressed to select (Manual or Automatic)
- *  Parameters           : Void
- *  Return               : Void
- *  Critical/explanation : No
- **************************************************************/
-void Selector_down(void)
-{
-	if(BUTTON_DOWN == BTN_ACTIVE)
-	{
-		ruw_time_button++;
-		if((ruw_time_button>FIVE_HUNDRED_MILLISECONDS) && (BUTTON_DOWN == BTN_ACTIVE))
-		{
-			rub_State=MANUAL_DOWN;
-		}
-		
-		else
-		{
-			//Do nothing
-		}
-	}
-	
-	else
-	{
-		window_down();	
-	}
-}  /*************** End function automatic_down_action ***************/
 
 
 
@@ -396,26 +481,13 @@ void Selector_down(void)
  **************************************************************/
 void aintipinch(void)
 {
-	ruw_time_button++;	       
-	if(ruw_time_button>=TEN_MILLISECONDS)
-	{
-		ruw_time_transition++;
-		if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position<=_LED10))
-		{
-			LED_OFF(_LED_UP);
-			LED_ON(_LED_DOWN);
-			LED_OFF(rub_LED_Position);
-			rub_LED_Position++;
-			ruw_time_transition=ZERO_MILLISECONDS;
-		}
+	window_down();
 			
-		if(rub_LED_Position==OPEN)
-		{
-			rub_LED_Position=_LED10;
-			ruw_time_button=ZERO_MILLISECONDS;
-			LED_OFF(_LED_DOWN);
-			rub_State=DELAY_5_SECONDS;
-		}
+	if(rub_LED_Position==TOTALLY_OPEN)
+	{
+		rub_LED_Position=_LED10;
+		LED_OFF(_LED_DOWN);
+		rub_State=LOCK;
 	}
 }   /*************** End function antipinch ***************/
 
@@ -433,11 +505,14 @@ void aintipinch(void)
  **************************************************************/
 void delay_5_seconds(void)
 {
-	static T_UWORD luw_time_delay;
-	luw_time_delay++;
-	if(luw_time_delay==FIVE_SECONDS)
+	if(rub_State==LOCK)
 	{
-		luw_time_delay=ZERO_MILLISECONDS;
-		rub_State=IDLE;
+		static T_UWORD luw_time_delay=ZERO_MILLISECONDS;
+		luw_time_delay++;
+		if(luw_time_delay==FIVE_SECONDS)
+		{
+			luw_time_delay=ZERO_MILLISECONDS;
+			rub_State=IDLE;
+		}	
 	}
 }   /**************** End function delay_5_seconds ***************/

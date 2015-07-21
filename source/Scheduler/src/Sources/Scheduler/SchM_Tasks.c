@@ -27,7 +27,6 @@
 
 #include "SchM_Tasks.h"
 
-#include "window_lifter.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -96,7 +95,7 @@
  **************************************************************/
  void SchM_2p5ms_Task(void)
  {
- 	State_Machine();
+ 	
  }
  
  
@@ -112,7 +111,7 @@
  **************************************************************/
  void SchM_5ms_Task(void)
  {
- 	
+ 	State_Machine();
  }
  
  
@@ -160,5 +159,5 @@
  **************************************************************/
  void SchM_40ms_Task(void)
  {
- 	
+ 	delay_5_seconds();
  }

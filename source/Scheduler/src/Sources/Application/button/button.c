@@ -136,6 +136,22 @@ void Evaluate_bounce_button(void)
 			//Do nothing
 		}
 	}
+	
+	
+	else if(ANTI_PINCH == BTN_ACTIVE)
+	{		
+		lub_time_button++;	             /*Increases time to 10 milliseconds*/
+		if(lub_time_button>=TEN_MILLISECONDS)
+		{
+			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/
+			status_button=SIGNAL_ANTIPINCH;
+		}
+		
+		else
+		{
+			//Do nothing
+		}
+	}
 			
 	else
 	{

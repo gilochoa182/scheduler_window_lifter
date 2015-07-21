@@ -26,15 +26,7 @@
 
 /* Includes */
 
-/*-- Defines -----------------------------------------------------------------*/
 
-#define ZERO_MILLISECONDS           0
-#define TEN_MILLISECONDS            4
-#define FIVE_HUNDRED_MILLISECONDS   200
-#define FOUR_HUNDRED_MILLISECONDS   160
-#define FIVE_SECONDS                2000
-#define CLOSED                      255
-#define OPEN                        10
 
 
 /* Exported types and constants */
@@ -49,16 +41,7 @@
 /*==================================================*/ 
 /* BYTE constants */
 
-enum ESTATUS
-{
-	IDLE,
-	MANUAL_UP,
-	MANUAL_DOWN,
-	SELECTOR_UP,
-	SELECTOR_DOWN,
-	ANTIPINCH,
-	DELAY_5_SECONDS
-};
+
 
 
 /* WORD constants */
@@ -88,7 +71,6 @@ enum ESTATUS
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void State_Machine(void);
 
 /* Functions macros */
 

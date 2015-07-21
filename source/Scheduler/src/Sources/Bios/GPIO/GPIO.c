@@ -39,6 +39,12 @@
 #include "GPIO.h"
 
 
+#define _BUTTON1 64
+#define _BUTTON2 65
+#define _BUTTON3 66
+#define _BUTTON4 67
+
+
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
 /* Functions macros */

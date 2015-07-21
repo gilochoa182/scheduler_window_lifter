@@ -52,21 +52,6 @@
 #define _LED_DOWN  11
 
 
-#define _BUTTON1 64
-#define _BUTTON2 65
-#define _BUTTON3 66
-#define _BUTTON4 67
-
-
-/* Input Buttons */
-#define BUTTON_UP        SIU.GPDI[_BUTTON1].B.PDI
-#define BUTTON_DOWN      SIU.GPDI[_BUTTON2].B.PDI
-#define BUTTON3          SIU.GPDI[_BUTTON3].B.PDI
-#define ANTI_PINCH       SIU.GPDI[_BUTTON4].B.PDI
-
-#define BTN_ACTIVE                  0
-#define BTN_INACTIVE                1
-
 
 
 /** Set LED */ 
@@ -116,7 +101,7 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-void EmbIOs_Config(void);
+extern void EmbIOs_Config(void);
 
 /* Functions macros */
 
