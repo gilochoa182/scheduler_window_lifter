@@ -52,12 +52,12 @@ typedef T_UBYTE SchedulerTaskOffsetType;
 
 typedef enum
 {
-	MASK_1P25MS=   3,
-	MASK_2P5MS =   7,
-	MASK_5MS   =   15,
-	MASK_10MS  =   31,
-	MASK_20MS  =   63,
-	MASK_40MS  =   127
+	MASK_1P25MS=   1,
+	MASK_2P5MS =   3,
+	MASK_5MS   =   7,
+	MASK_10MS  =   15,
+	MASK_20MS  =   31,
+	MASK_40MS  =   63
 }SchedulerTaskMaskType;
 
 

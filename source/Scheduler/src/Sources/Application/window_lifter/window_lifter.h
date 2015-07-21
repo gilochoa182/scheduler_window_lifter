@@ -29,10 +29,10 @@
 /*-- Defines -----------------------------------------------------------------*/
 
 #define ZERO_MILLISECONDS           0
-#define TEN_MILLISECONDS            10
-#define FIVE_HUNDRED_MILLISECONDS   500
-#define FOUR_HUNDRED_MILLISECONDS   400
-#define FIVE_SECONDS                5000
+#define TEN_MILLISECONDS            4
+#define FIVE_HUNDRED_MILLISECONDS   200
+#define FOUR_HUNDRED_MILLISECONDS   160
+#define FIVE_SECONDS                2000
 #define CLOSED                      255
 #define OPEN                        10
 
@@ -59,6 +59,7 @@ enum ESTATUS
 	ANTIPINCH,
 	DELAY_5_SECONDS
 };
+
 
 /* WORD constants */
 

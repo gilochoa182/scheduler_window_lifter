@@ -26,6 +26,7 @@
 #include "MCU_derivative.h"
 #include    "SchM_Cfg.h"
 #include    "MemAlloc_Cfg.h"
+#include    "GPIO.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -85,12 +86,12 @@ void disableWatchdog(void);
 void main(void) 
 
 {
+	T_UBYTE lub_gpio_counter=0;
 	initModesAndClock();
 	/* Disable Watchdog */
 	disableWatchdog();
 	MemAllocInit(&MemAllocConfig);
-	/*Initialize LEDs on TRK-MPC560xB board */
-		
+	EmbIOs_Config();	
 	/*Initialize Interrupts */
 	INTC_InitINTCInterrupts();
 	/*Initialize Exception Handlers */

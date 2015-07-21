@@ -3,7 +3,7 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        buttons.h
+* C Include:        button.h
 * version:          1.0
 * created_by:       Gilberto Ochoa
 * date_created:     Mon Jun 22 2015
@@ -21,18 +21,10 @@
 /*                                                                            */
 /*============================================================================*/
 
-#ifndef _BUTTONS_H        /* To avoid double inclusion */
-#define _BUTTONS_H
+#ifndef _BUTTON_H        /* To avoid double inclusion */
+#define _BUTTON_H
 
 /* Includes */
-#include "typedefs.h"
-
-/*-- Defines -----------------------------------------------------------------*/
-
-#define BTN_PRESSED                 0
-#define BTN_NOT_PRESSED             1
-#define ZERO_MILLISECONDS           0
-#define TEN_MILLISECONDS            10
 
 
 /* Exported types and constants */
@@ -47,6 +39,14 @@
 /*==================================================*/ 
 /* BYTE constants */
 
+
+typedef enum
+{
+	BUTTON_DOWN_UNPRESS,
+	BUTTON_UP_UNPRESS,
+	BUTTON_DOWN_PRESS,
+	BUTTON_UP_PRESS
+}ButtonStateType;
 
 /* WORD constants */
 
@@ -75,15 +75,14 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-void Evaluate_bounce_button(T_UBYTE button);
+extern void Evaluate_bounce_button(void);
 
 /* Functions macros */
-
 
 
 /* Exported defines */
 
 
-#endif /* _BUTTONS_H */
+#endif /* _BUTTON_H */
 
 /*******************************************************************************/

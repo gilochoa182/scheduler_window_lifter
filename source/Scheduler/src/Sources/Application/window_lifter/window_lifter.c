@@ -34,6 +34,8 @@
 
 #include "GPIO.h"
 
+#include "button.h"
+
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
 /* Functions macros */
@@ -56,6 +58,8 @@
 /*======================================================*/ 
 /* BYTE RAM variables */
 T_UBYTE rub_State=IDLE, rub_LED_Position=_LED1;
+extern ButtonStateType status_button;
+
 
 /* WORD RAM variables */
 T_UWORD ruw_time_button=ZERO_MILLISECONDS, ruw_time_transition=ZERO_MILLISECONDS;
@@ -97,7 +101,15 @@ void State_Machine(void)
 	switch(rub_State)
 	{
 		case IDLE:
-			Evaluate_bounce_button();     /* Function available in file (button.c) */
+			if(status_button==BUTTON_DOWN_PRESS)
+			{
+				rub_State=SELECTOR_DOWN;
+			}
+			
+			else if(status_button==BUTTON_UP_PRESS)
+			{
+				rub_State=SELECTOR_UP;
+			}
 			break;
 			
 		

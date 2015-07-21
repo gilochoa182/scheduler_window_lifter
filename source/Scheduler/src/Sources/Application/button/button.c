@@ -3,7 +3,7 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:        buttons.c         
+* C Source:        button,c         
 * version:         1.2
 * created_by:      Gilberto Ochoa
 * date_created:    Mon Jun 22 2015
@@ -11,7 +11,7 @@
 /* DESCRIPTION : C source template file                                       */
 /*============================================================================*/
 /* FUNCTION COMMENT : This file works with the buttons selection              */
-/* Evaluate the rebound in the buttons                                        */
+/* Button Up & Button Down, Evaluate the rebound in the button                */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
@@ -36,7 +36,15 @@
 /** Core modules */
 
 /** Own headers */
-#include "buttons.h"
+#include "button.h"
+
+/* GPIO routines prototypes */ 
+#include "GPIO.h"
+
+/*-- Defines -----------------------------------------------------------------*/
+
+#define ZERO_MILLISECONDS           0
+#define TEN_MILLISECONDS            8
 
 
 /* Functions macros, constants, types and datas         */
@@ -61,6 +69,7 @@
 /*======================================================*/ 
 /* BYTE RAM variables */
 
+ButtonStateType status_button=BUTTON_DOWN_UNPRESS;
 
 /* WORD RAM variables */
 
@@ -93,16 +102,33 @@
  *  Return               :  void
  *  Critical/explanation :  NO
  **************************************************************/
-void Evaluate_bounce_button(T_UBYTE button)
+void Evaluate_bounce_button(void)
 {
-	static T_UBYTE lub_time_button=0;
+	static T_UBYTE lub_time_button=ZERO_MILLISECONDS;
 	
-	if(button == BTN_PRESSED) 
+	if((BUTTON_DOWN == BTN_ACTIVE) && (BUTTON_UP == BTN_INACTIVE))
 	{	
 		lub_time_button++;                       /*Increases time to 10 milliseconds*/
 		if(lub_time_button>=TEN_MILLISECONDS)
 		{
-			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/               
+			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/
+			status_button=BUTTON_DOWN_PRESS;               
+		}
+		
+		else
+		{
+			//Do nothing
+		}
+	}
+			
+			
+	else if((BUTTON_UP == BTN_ACTIVE) && (BUTTON_DOWN == BTN_INACTIVE) )
+	{		
+		lub_time_button++;	             /*Increases time to 10 milliseconds*/
+		if(lub_time_button>=TEN_MILLISECONDS)
+		{
+			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/
+			status_button=BUTTON_UP_PRESS;
 		}
 		
 		else
@@ -114,5 +140,6 @@ void Evaluate_bounce_button(T_UBYTE button)
 	else
 	{
 		lub_time_button=ZERO_MILLISECONDS;       /* Reset time*/
+		status_button=BUTTON_DOWN_UNPRESS;
 	}
 }    /* End Evaluate_bounce_button*/

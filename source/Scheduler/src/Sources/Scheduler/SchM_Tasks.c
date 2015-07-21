@@ -27,6 +27,8 @@
 
 #include "SchM_Tasks.h"
 
+#include "window_lifter.h"
+
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
 /* Functions macros */
@@ -78,7 +80,7 @@
  **************************************************************/
  void SchM_1p25ms_Task(void)
  {
- 	
+ 	Evaluate_bounce_button(); 
  }
 
 
@@ -94,7 +96,7 @@
  **************************************************************/
  void SchM_2p5ms_Task(void)
  {
- 	
+ 	State_Machine();
  }
  
  
