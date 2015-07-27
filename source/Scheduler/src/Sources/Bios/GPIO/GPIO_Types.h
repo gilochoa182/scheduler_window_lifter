@@ -1,38 +1,35 @@
 /*============================================================================*/
-/*                        SV C BC SOFTWARE GROUP                              */
+/*                        Continental Automotive                              */
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        window_lifter.h
-* version:          1.0
-* created_by:       Gilberto Ochoa
-* date_created:     Mon Jun 22 2015
+* C Source:         %GPIO_Types.h%
+* Instance:         CES
+* %version:         1 %
+* %created_by:      Armando Villa %
+* %date_created:    Wed Jul  15
 *=============================================================================*/
-/* DESCRIPTION : Header of the control window lifter                          */
+/* DESCRIPTION : A GPIO Types configuration                                   */
 /*============================================================================*/
-/* FUNCTION COMMENT : Header of the window_lifter.c file                      */
+/* FUNCTION COMMENT : A GPIO data types configuration oriented to a GPIO      */
+/*                    GPIO driver.        .                                   */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 22/06/2015  |                               | Gilberto Ochoa   */
-/*                                                                            */
+/*  1.0      | 15/08/2015  |                               | Armando Villa    */
+/* Integration under Continuus CM                                             */
 /*============================================================================*/
 
-#ifndef _WINDOW_LIFTER_H        /*prevent duplicated includes*/
-#define _WINDOW_LIFTER_H
+#ifndef _GPIO_TYPES_H                            /* To avoid double inclusion */
+#define _GPIO_TYPES_H
 
 /* Includes */
-
+/* -------- */
 #include "typedefs.h"
 
-/*-- Defines -----------------------------------------------------------------*/
-
-#define TOTALLY_CLOSED              255
-#define TOTALLY_OPEN                10
-#define FIVE_SECONDS                125
 
 /* Exported types and constants */
 /* ---------------------------- */
@@ -40,17 +37,22 @@
 /* Types definition */
 /* typedef */
 
-typedef enum
-{
-	IDLE,
-	VALIDATION,
-	MANUAL_UP,
-	MANUAL_DOWN,
-	AUTOMATIC_UP,
-	AUTOMATIC_DOWN,
-	ANTIPINCH,
-	LOCK
-}StateMachineType;
+enum PORTS{
+	PORTA = 0,
+	PORTB = 16,
+	PORTC = 32,
+	PORTD = 48,
+	PORTE = 64,
+	PORTF = 80,
+	PORTG = 86,
+	PORTH = 122,
+	PORTI = 138
+};
+
+enum MODE{
+	INPUT,
+	OUTPUT
+};
 
 /*==================================================*/ 
 /* Declaration of exported constants                */
@@ -85,10 +87,7 @@ typedef enum
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void State_Machine(void);
-extern void delay_5_seconds(void);
-T_UBYTE Get_LEDPosition(void);
-void Set_LEDPosition(T_UBYTE option);
+
 
 /* Functions macros */
 
@@ -96,6 +95,6 @@ void Set_LEDPosition(T_UBYTE option);
 /* Exported defines */
 
 
-#endif /* _WINDOW_LIFTER_H */
+#endif
 
-/*******************************************************************************/
+

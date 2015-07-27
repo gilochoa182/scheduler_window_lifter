@@ -3,32 +3,29 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:         main.c
-* version:          1.0
+* C Source:         led.c
+* version:          1
 * created_by:       Gilberto Ochoa
-* date_created:     Mon  Jul 13   2015 
+* %date_created:    Jul  22 2015 
 *=============================================================================*/
-/* DESCRIPTION :  This File contains initializations and main settings        */
+/* DESCRIPTION :                                                              */
 /*============================================================================*/
 /* FUNCTION COMMENT :                                                         */
+/*                                                                            */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Gilberto Ochoa   */
-/*           |             |                               |                  */
+/*  1.0      | 22/07/2015  |                               | Gilberto Ochoa   */
+/*                                                                            */
 /*============================================================================*/
 
 /* Includes */
 /* -------- */
 
-#include    "SchM_Cfg.h"
-
-#include    "MemAlloc_Cfg.h"
-
-#include    "led.h"
+#include "led.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -68,65 +65,53 @@
 
 /* Private functions prototypes */
 /* ---------------------------- */
-void disableWatchdog(void);
+
 
 
 /* Exported functions prototypes */
 /* ----------------------------- */
 
 
-
-/* Private functions */
-/* ----------------- */
+/* Exported functions */
+/* ------------------ */
 /**************************************************************
- *  Name                 :  main
- *  Description          :  The Main function
- *  Parameters           :  void
- *  Return               :  void
+ *  Name                 :	LED_ON
+ *  Description          :
+ *  Parameters           :  T_UBYTE channel
+ *  Return               :  Void
  *  Critical/explanation :  No
  **************************************************************/
-void main(void) 
-
+void LED_ON(T_UBYTE channel)
 {
-	T_UBYTE lub_gpio_counter=0;
-	initModesAndClock();
-	/* Disable Watchdog */
-	disableWatchdog();
-	MemAllocInit(&MemAllocConfig);
-		for(lub_gpio_counter=0;lub_gpio_counter<4;lub_gpio_counter++)
-	{
-		GPIO_SetPin(PORTE,lub_gpio_counter,INPUT);
-	}
-	for(lub_gpio_counter=0;lub_gpio_counter<12;lub_gpio_counter++)
-	{
-		GPIO_SetPin(PORTA,lub_gpio_counter,OUTPUT);
-	}
-	LED_OFF(_LED_UP);
-	LED_OFF(_LED_DOWN);	
-	/*Initialize Interrupts */
-	INTC_InitINTCInterrupts();
-	/*Initialize Exception Handlers */
-	EXCEP_InitExceptionHandlers();
-    /* Initialize Scheduler */
-    SchM_Init(&SchedulerConfig);
-    /* Start Scheduler*/
-    SchM_Start();
+	LOW(channel);
 }
 
 
-
-/* Private functions */
-/* ----------------- */
+/* Exported functions */
+/* ------------------ */
 /**************************************************************
- *  Name                 :  disableWatchdog
- *  Description          :  Disable the Watchdog
- *  Parameters           :  void
- *  Return               :  void
+ *  Name                 :	LED_OFF
+ *  Description          :
+ *  Parameters           :  T_UBYTE channel
+ *  Return               :  Void
  *  Critical/explanation :  No
  **************************************************************/
-void disableWatchdog(void) 
+void LED_OFF(T_UBYTE channel)
 {
-  SWT.SR.R = 0x0000c520;     /* Write keys to clear soft lock bit */
-  SWT.SR.R = 0x0000d928; 
-  SWT.CR.R = 0x8000010A;     /* Clear watchdog enable (WEN) */
+	HIGH(channel);
+}
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	LED_TOGGLE
+ *  Description          :
+ *  Parameters           :  T_UBYTE channel
+ *  Return               :  Void
+ *  Critical/explanation :  No
+ **************************************************************/
+void LED_TOGGLE(T_UBYTE channel)
+{
+	TOGGLE(channel);
 }

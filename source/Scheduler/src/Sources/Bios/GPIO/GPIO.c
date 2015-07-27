@@ -1,57 +1,42 @@
 /*============================================================================*/
-/*                        SV C CE SOFTWARE GROUP                              */
+/*                        Continental Automotive                              */
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:        GPIO,c         
-* version:         1.0
-* created_by:      Gilberto Ochoa
-* date_created:    Mon Jun 22 2015
+* C Source:         %GPIO.c%
+* Instance:         CES
+* %version:         1 %
+* %created_by:      Armando Villa %
+* %date_created:    Wed Jul  15
 *=============================================================================*/
-/* DESCRIPTION :                                                              */
+/* DESCRIPTION : A GPIO Driver                                                */
 /*============================================================================*/
-/* FUNCTION COMMENT : This file configurated GPIO as output and input         */
-/*                                                                            */
+/* FUNCTION COMMENT : A GPIO header designed to configurate the indiviual pin */
+/*                    or the complete port.                                   */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 22/06/2015  |                               | Gilberto Ochoa   */
-/* Start of this file                                                         */
-/*============================================================================*/
-/*  1.1      | 30/06/2015  |                               | Gilberto Ochoa   */
-/* Organization of Private functions prototypes                               */
+/*  1.0      | 15/08/2015  |                               | Armando Villa    */
+/* Integration under Continuus CM                                             */
 /*============================================================================*/
 
-
-/*****************************************************************************************************
-* Include files
-*****************************************************************************************************/
-
-/** Core modules */
-
-/** MCU derivative information */
-#include "MCU_derivative.h"
-/** Own headers */
-/* GPIO routines prototypes */ 
+/* Includes */
+/* -------- */
 #include "GPIO.h"
-
-
-#define _BUTTON1 64
-#define _BUTTON2 65
-#define _BUTTON3 66
-#define _BUTTON4 67
 
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
 /* Functions macros */
+#define INPUT_MODE 0x100
+#define OUTPUT_MODE 0x200
 
-/*==================================================*/ 
+/*==================================================*/
 /* Definition of constants                          */
-/*==================================================*/ 
+/*==================================================*/
 /* BYTE constants */
 
 
@@ -62,10 +47,11 @@
 
 
 
-/*======================================================*/ 
+/*======================================================*/
 /* Definition of RAM variables                          */
-/*======================================================*/ 
+/*======================================================*/
 /* BYTE RAM variables */
+
 
 /* WORD RAM variables */
 
@@ -73,9 +59,9 @@
 /* LONG and STRUCTURE RAM variables */
 
 
-/*======================================================*/ 
+/*======================================================*/
 /* close variable declaration sections                  */
-/*======================================================*/ 
+/*======================================================*/
 
 /* Private defines */
 
@@ -84,38 +70,139 @@
 /* ---------------------------- */
 
 
+
 /* Exported functions prototypes */
 /* ----------------------------- */
+
 
 
 /* Exported functions */
 /* ------------------ */
 /**************************************************************
- *  Name                 :	EmbIOs_Config
- *  Created by           :  Gilberto Ochoa
- *  Description          :  Configuration diferentes components Embedded
- *  Description          :  called periodically to operate.
- *  Parameters           :  void
- *  Return               :  void
- *  Critical/explanation :  NO
+ *  Name                 :	GPIO_SetPin
+ *  Description          :	A GPIO Individual Pin Driver
+ *  Parameters           :  [Input]
+ *  Return               :	[Void]
+ *  Critical/explanation :    [yes / No]
  **************************************************************/
-void EmbIOs_Config(void)
-{
-	T_UBYTE lub_i;
-  
-    /* Set Port A as OUTPUT*/
-  	for(lub_i=0;lub_i<12;lub_i++)
-  	{
-  		SIU.PCR[lub_i].R = 0x200;	
-  	}
-  	
-  	SIU.GPDO[10].B.PDO = off;
-  	SIU.GPDO[11].B.PDO = off;
-  	
-  	
-  	/* Embedded board buttons seted as inputs */
-  	SIU.PCR[_BUTTON1].R = 0x100;	
-  	SIU.PCR[_BUTTON2].R = 0x100;
-  	SIU.PCR[_BUTTON3].R = 0x100;
-  	SIU.PCR[_BUTTON4].R = 0x100;	
+void GPIO_SetPin(T_UBYTE lub_port, T_UBYTE lub_pin, T_UBYTE lub_mode){
+	if (lub_mode == INPUT){
+		switch(lub_port){
+			case PORTA:
+				SIU.PCR[startA + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTB:
+				SIU.PCR[startB + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTC:
+				SIU.PCR[startC + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTD:
+				SIU.PCR[startD + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTE:
+				SIU.PCR[startE + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTF:
+				SIU.PCR[startF + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTG:
+				SIU.PCR[startG + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTH:
+				SIU.PCR[startH + lub_pin].R = INPUT_MODE;
+				break;
+
+			case PORTI:
+				SIU.PCR[startA + lub_pin].R = INPUT_MODE;
+				break;
+
+			default:
+				/* Do nothing */
+				break;
+		}
+	}
+
+	else if(lub_mode == OUTPUT){
+		switch(lub_port){
+			case PORTA:
+				SIU.PCR[startA + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTB:
+				SIU.PCR[startB + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTC:
+				SIU.PCR[startC + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTD:
+				SIU.PCR[startD + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTE:
+				SIU.PCR[startE + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTF:
+				SIU.PCR[startF + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTG:
+				SIU.PCR[startG + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTH:
+				SIU.PCR[startH + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			case PORTI:
+				SIU.PCR[startA + lub_pin].R = OUTPUT_MODE;
+				break;
+
+			default:
+				/* Do nothing */
+				break;
+		}
+	}
+
+	else{
+		/* Do nothing */
+	}
+}
+
+/**************************************************************
+ *  Name                 :	GPIO_SetPort
+ *  Description          :	A GPIO Port Driver Configurator
+ *  Parameters           :  [Input]
+ *  Return               :	[Void]
+ *  Critical/explanation :    [yes / No]
+ **************************************************************/
+void GPIO_SetPort(T_UBYTE lub_port, T_UBYTE lub_mode){
+	T_UBYTE lub_gpio_counter;
+
+	if(lub_mode == INPUT){
+		for(lub_gpio_counter = lub_port; lub_gpio_counter <= (lub_port+COMPLETE_PORT); lub_gpio_counter++){
+			SIU.PCR[lub_gpio_counter].R = INPUT_MODE;
+		}
+	}
+
+	else if(lub_mode == OUTPUT){
+		for(lub_gpio_counter = lub_port; lub_gpio_counter <= (lub_port+COMPLETE_PORT); lub_gpio_counter++){
+			SIU.PCR[lub_gpio_counter].R = OUTPUT_MODE;
+		}
+	}
+
+	else{
+		/* Do nothing */
+	}
+
 }

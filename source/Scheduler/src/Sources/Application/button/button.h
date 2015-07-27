@@ -26,6 +26,7 @@
 
 /* Includes */
 
+#include "GPIO.h"
 
 /* define */
 
@@ -39,8 +40,11 @@
 #define BUTTON3          SIU.GPDI[_BUTTON3].B.PDI
 #define ANTI_PINCH       SIU.GPDI[_BUTTON4].B.PDI
 
-#define BTN_ACTIVE                  0
-#define BTN_INACTIVE                1
+#define BTN_ACTIVE                  1
+#define BTN_INACTIVE                0
+
+#define ZERO_MILLISECONDS           0
+#define TEN_MILLISECONDS            8
 
 
 /* Exported types and constants */
@@ -48,13 +52,6 @@
 
 /* Types definition */
 /* typedef */
-
-
-/*==================================================*/ 
-/* Declaration of exported constants                */
-/*==================================================*/ 
-/* BYTE constants */
-
 
 typedef enum
 {
@@ -64,6 +61,12 @@ typedef enum
 	BUTTON_UP_PRESS,
 	SIGNAL_ANTIPINCH
 }ButtonStateType;
+
+/*==================================================*/ 
+/* Declaration of exported constants                */
+/*==================================================*/ 
+/* BYTE constants */
+
 
 /* WORD constants */
 

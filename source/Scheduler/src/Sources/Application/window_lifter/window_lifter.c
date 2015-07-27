@@ -30,11 +30,11 @@
 /* -------- */
 
 /** Own headers */
-#include "window_lifter.h"
-
-#include "GPIO.h"
+#include "led.h"
 
 #include "button.h"
+
+#include "window_lifter.h"
 
 
 /*-- Defines -----------------------------------------------------------------*/
@@ -42,24 +42,11 @@
 #define ZERO_MILLISECONDS           0
 #define FIVE_HUNDRED_MILLISECONDS   100
 #define FOUR_HUNDRED_MILLISECONDS   80
-#define FIVE_SECONDS                125
-#define TOTALLY_CLOSED              255
-#define TOTALLY_OPEN                10
+
+
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
-
-typedef enum
-{
-	IDLE,
-	VALIDATION,
-	MANUAL_UP,
-	MANUAL_DOWN,
-	AUTOMATIC_UP,
-	AUTOMATIC_DOWN,
-	ANTIPINCH,
-	LOCK
-}StateMachineType;
 
 /* Functions macros */
 
@@ -82,15 +69,13 @@ typedef enum
 /*======================================================*/ 
 /* BYTE RAM variables */
 
-StateMachineType rub_State=IDLE;
+StateMachineType rub_State = IDLE;
 
-T_UBYTE rub_LED_Position=_LED1;
-
-extern ButtonStateType status_button;
+T_UBYTE rub_LED_Position = _LED1;
 
 
 /* WORD RAM variables */
-T_UWORD ruw_time_button=ZERO_MILLISECONDS, ruw_time_transition=ZERO_MILLISECONDS;
+
 
 /* LONG and STRUCTURE RAM variables */
 
@@ -130,9 +115,7 @@ void State_Machine(void)
 	switch(rub_State)
 	{
 		case IDLE:
-			ruw_time_button=ZERO_MILLISECONDS;
-			ruw_time_transition=ZERO_MILLISECONDS;
-			rub_State=VALIDATION;
+			rub_State = VALIDATION;
 			break;
 			
 		case VALIDATION:
@@ -184,24 +167,24 @@ void State_Machine(void)
  **************************************************************/
 void validation(void)
 {
-	if(status_button==BUTTON_DOWN_PRESS)
+	if(Get_Status_button() == BUTTON_DOWN_PRESS)
 	{
-		rub_State=AUTOMATIC_DOWN;
+		rub_State = AUTOMATIC_DOWN;
 	}
 			
-	else if(status_button==BUTTON_UP_PRESS)
+	else if(Get_Status_button() == BUTTON_UP_PRESS)
 	{
-		rub_State=AUTOMATIC_UP;
+		rub_State = AUTOMATIC_UP;
 	}
 	
-	else if((status_button==SIGNAL_ANTIPINCH)&&((rub_State==AUTOMATIC_UP)||(rub_State==MANUAL_UP)))
+	else if((Get_Status_button() == SIGNAL_ANTIPINCH) && ((rub_State==AUTOMATIC_UP) || (rub_State==MANUAL_UP)))
 	{
-		rub_State=ANTIPINCH;
+		rub_State = ANTIPINCH;
 	}
 			
 	else
 	{
-		rub_State=IDLE;
+		rub_State = IDLE;
 	}
 }
 
@@ -219,13 +202,15 @@ void validation(void)
  **************************************************************/
 void automatic_up(void)
 {
-	if(status_button==BUTTON_UP_PRESS)        /* Evaluate if the button continues pressed TO MANUAL MODE */
+	static T_UBYTE rub_time_button_up = ZERO_MILLISECONDS;
+	
+	if(Get_Status_button() == BUTTON_UP_PRESS)        /* Evaluate if the button continues pressed TO MANUAL MODE */
 	{
-		ruw_time_button++;
-		if(ruw_time_button>FIVE_HUNDRED_MILLISECONDS) 
+		rub_time_button_up++;
+		if(rub_time_button_up > FIVE_HUNDRED_MILLISECONDS) 
 		{
-			ruw_time_button=ZERO_MILLISECONDS;
-			rub_State=MANUAL_UP;
+			rub_time_button_up = ZERO_MILLISECONDS;
+			rub_State = MANUAL_UP;
 		}
 		
 		else
@@ -236,13 +221,13 @@ void automatic_up(void)
 	
 	else                                /* AUTOMATIC MODE */
 	{
-		ruw_time_button=ZERO_MILLISECONDS;
+		rub_time_button_up = ZERO_MILLISECONDS;
 		window_up();
 		
-		if(rub_LED_Position==TOTALLY_CLOSED)
+		if(rub_LED_Position == TOTALLY_CLOSED)
 		{
-			rub_State=IDLE;
-			rub_LED_Position=_LED1;
+			rub_State = IDLE;
+			rub_LED_Position = _LED1;
 			LED_OFF(_LED_UP);
 		}	
 			
@@ -252,9 +237,9 @@ void automatic_up(void)
 		}	
 	}
 	
-	if(status_button==BUTTON_DOWN_PRESS)     
+	if(Get_Status_button() == BUTTON_DOWN_PRESS)     
 	{
-		rub_State=MANUAL_DOWN;
+		rub_State = MANUAL_DOWN;
 	}
 			
 }   /*************** End function automatic_up_action ***************/
@@ -273,13 +258,14 @@ void automatic_up(void)
  **************************************************************/
 void automatic_down(void)
 {
-	if(status_button==BUTTON_DOWN_PRESS)         /* Evaluate if the button continues pressed TO MANUAL MODE */
+	static T_UBYTE rub_time_button_down = ZERO_MILLISECONDS;
+	if(Get_Status_button() == BUTTON_DOWN_PRESS)         /* Evaluate if the button continues pressed TO MANUAL MODE */
 	{
-		ruw_time_button++;
-		if(ruw_time_button>FIVE_HUNDRED_MILLISECONDS)
+		rub_time_button_down++;
+		if(rub_time_button_down > FIVE_HUNDRED_MILLISECONDS)
 		{
-			ruw_time_button=ZERO_MILLISECONDS;
-			rub_State=MANUAL_DOWN;
+			rub_time_button_down = ZERO_MILLISECONDS;
+			rub_State = MANUAL_DOWN;
 		}
 		
 		else
@@ -290,13 +276,13 @@ void automatic_down(void)
 	
 	else                            /* AUTOMATIC MODE */
 	{
-		ruw_time_button=ZERO_MILLISECONDS;
+		rub_time_button_down = ZERO_MILLISECONDS;
 		window_down();
 		
-		if(rub_LED_Position==TOTALLY_OPEN)
+		if(rub_LED_Position == TOTALLY_OPEN)
 		{
-			rub_State=IDLE;
-			rub_LED_Position=_LED10;
+			rub_State = IDLE;
+			rub_LED_Position = _LED10;
 			LED_OFF(_LED_DOWN);
 		}
 		
@@ -306,9 +292,9 @@ void automatic_down(void)
 		}	
 	}
 	
-	if(status_button==BUTTON_UP_PRESS)
+	if(Get_Status_button() == BUTTON_UP_PRESS)
 	{
-		rub_State=MANUAL_UP;
+		rub_State = MANUAL_UP;
 	}
 	
 	else
@@ -331,14 +317,15 @@ void automatic_down(void)
  **************************************************************/
 void window_down(void)
 {
+	static T_UBYTE rub_time_transition_down = ZERO_MILLISECONDS;
 	LED_OFF(_LED_UP);
-	ruw_time_transition++;
-	if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position<=_LED10))
+	rub_time_transition_down++;
+	if((rub_time_transition_down == FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position <= _LED10))
 	{
 		LED_ON(_LED_DOWN);
 		LED_OFF(rub_LED_Position);
 		rub_LED_Position++;
-		ruw_time_transition=ZERO_MILLISECONDS;
+		rub_time_transition_down = ZERO_MILLISECONDS;
 	}
 		
 	else
@@ -362,22 +349,22 @@ void window_down(void)
  **************************************************************/
 void window_up(void)
 {	
+	static T_UBYTE rub_time_transition_up = ZERO_MILLISECONDS;
 	LED_OFF(_LED_DOWN);
-	if(ANTI_PINCH==BTN_ACTIVE)
+	if(ANTI_PINCH == BTN_ACTIVE)
 	{
-		ruw_time_button=ZERO_MILLISECONDS;
-		rub_State=ANTIPINCH;	
+		rub_State = ANTIPINCH;	
 	} /* End Evaluation Anti Pinch*/
 	
 	else
 	{	
-		ruw_time_transition++;
-		if((ruw_time_transition==FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position>=_LED1))
+		rub_time_transition_up++;
+		if((rub_time_transition_up == FOUR_HUNDRED_MILLISECONDS) && (rub_LED_Position >= _LED1))
 		{
 			LED_ON(_LED_UP);
 			LED_ON(rub_LED_Position);
 			rub_LED_Position--;
-			ruw_time_transition=ZERO_MILLISECONDS;
+			rub_time_transition_up=ZERO_MILLISECONDS;
 		}
 			
 		else
@@ -403,15 +390,14 @@ void window_up(void)
  **************************************************************/
 void manual_up(void)
 {
-	if(status_button==BUTTON_UP_PRESS)
+	if(Get_Status_button() == BUTTON_UP_PRESS)
 	{
 		window_up();
 		
-		if(rub_LED_Position==TOTALLY_CLOSED)
+		if(rub_LED_Position == TOTALLY_CLOSED)
 		{
-			rub_State=IDLE;
-			rub_LED_Position=_LED1;
-			ruw_time_button=ZERO_MILLISECONDS;
+			rub_State = IDLE;
+			rub_LED_Position = _LED1;
 			LED_OFF(_LED_UP);
 		}	
 			
@@ -423,7 +409,7 @@ void manual_up(void)
 			
 	else
 	{
-		rub_State=IDLE;	
+		rub_State = IDLE;	
 		LED_OFF(_LED_UP);	
 	}	
 }   /*************** End function manual_up ***************/
@@ -442,15 +428,14 @@ void manual_up(void)
  **************************************************************/
 void manual_down(void)
 {
-	if(status_button==BUTTON_DOWN_PRESS)
+	if(Get_Status_button() == BUTTON_DOWN_PRESS)
 	{
 		window_down();
 		
-		if(rub_LED_Position==TOTALLY_OPEN)
+		if(rub_LED_Position == TOTALLY_OPEN)
 		{
-			rub_State=IDLE;
-			rub_LED_Position=_LED10;
-			ruw_time_button=ZERO_MILLISECONDS;
+			rub_State = IDLE;
+			rub_LED_Position = _LED10;
 			LED_OFF(_LED_DOWN);
 		}
 		
@@ -462,57 +447,77 @@ void manual_down(void)
 			
 	else
 	{
-		rub_State=IDLE;	
+		rub_State = IDLE;	
 		LED_OFF(_LED_DOWN);	
 	}
 }    /*************** End function manual_down ***************/
 
 
 
-/* Private functions */
-/* ----------------- */
+
+/* Exported functions */
+/* ------------------ */
 /**************************************************************
- *  Name                 : aintipinch
- *  Created by           : Gilberto Ochoa
- *  Description          : Detected if the signal is present to open the window
- *  Parameters           : Void
- *  Return               : Void
- *  Critical/explanation : No
+ *  Name                 :	Get_LEDPosition
+ *  Created by           :  Gilberto Ochoa
+ *  Description          :  
+ *  Parameters           :  void
+ *  Return               :  T_UBYTE rub_LED_Position
+ *  Critical/explanation :  NO
  **************************************************************/
-void aintipinch(void)
+T_UBYTE Get_LEDPosition(void)
 {
-	window_down();
-			
-	if(rub_LED_Position==TOTALLY_OPEN)
-	{
-		rub_LED_Position=_LED10;
-		LED_OFF(_LED_DOWN);
-		rub_State=LOCK;
-	}
-}   /*************** End function antipinch ***************/
+	return rub_LED_Position;
+}
 
 
 
-/* Private functions */
-/* ----------------- */
+/* Exported functions */
+/* ------------------ */
 /**************************************************************
- *  Name                 : delay_5_seconds
- *  Created by           : Gilberto Ochoa
- *  Description          : Generates a delay for 5 seconds to inactive the buttons
- *  Parameters           : Void
- *  Return               : Void
- *  Critical/explanation : No
+ *  Name                 :	Set_LEDPosition
+ *  Created by           :  Gilberto Ochoa
+ *  Description          :  
+ *  Parameters           :  T_UBYTE option
+ *  Return               :  void
+ *  Critical/explanation :  NO
  **************************************************************/
-void delay_5_seconds(void)
+void Set_LEDPosition(T_UBYTE option)
 {
-	if(rub_State==LOCK)
-	{
-		static T_UWORD luw_time_delay=ZERO_MILLISECONDS;
-		luw_time_delay++;
-		if(luw_time_delay==FIVE_SECONDS)
-		{
-			luw_time_delay=ZERO_MILLISECONDS;
-			rub_State=IDLE;
-		}	
-	}
-}   /**************** End function delay_5_seconds ***************/
+	
+	rub_LED_Position = option;
+}
+
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	Get_LEDPosition
+ *  Created by           :  Gilberto Ochoa
+ *  Description          :  
+ *  Parameters           :  void
+ *  Return               :  T_UBYTE rub_LED_Position
+ *  Critical/explanation :  NO
+ **************************************************************/
+//T_UBYTE Get_LEDPosition(void)
+//{
+//	return rub_LED_Position;
+//}
+
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	Set_LEDPosition
+ *  Created by           :  Gilberto Ochoa
+ *  Description          :  
+ *  Parameters           :  T_UBYTE option
+ *  Return               :  void
+ *  Critical/explanation :  NO
+ **************************************************************/
+//void Set_LEDPosition(T_UBYTE option)
+//{	
+//	rub_LED_Position = option;
+//}

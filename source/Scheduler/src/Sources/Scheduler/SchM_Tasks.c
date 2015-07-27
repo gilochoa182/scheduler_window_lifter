@@ -27,6 +27,12 @@
 
 #include "SchM_Tasks.h"
 
+#include "window_lifter.h"
+
+#include "button.h"
+
+#include "anti_pinch.h"
+
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */

@@ -36,15 +36,10 @@
 /** Core modules */
 
 /** Own headers */
+
 #include "button.h"
 
-/* GPIO routines prototypes */ 
-#include "GPIO.h"
-
 /*-- Defines -----------------------------------------------------------------*/
-
-#define ZERO_MILLISECONDS           0
-#define TEN_MILLISECONDS            8
 
 
 /* Functions macros, constants, types and datas         */
@@ -104,15 +99,15 @@ ButtonStateType status_button=BUTTON_DOWN_UNPRESS;
  **************************************************************/
 void Evaluate_bounce_button(void)
 {
-	static T_UBYTE lub_time_button=ZERO_MILLISECONDS;
+	static T_UBYTE lub_time_button = ZERO_MILLISECONDS;
 	
 	if((BUTTON_DOWN == BTN_ACTIVE) && (BUTTON_UP == BTN_INACTIVE))
 	{	
 		lub_time_button++;                       /*Increases time to 10 milliseconds*/
-		if(lub_time_button>=TEN_MILLISECONDS)
+		if(lub_time_button >= TEN_MILLISECONDS)
 		{
-			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/
-			status_button=BUTTON_DOWN_PRESS;               
+			lub_time_button = ZERO_MILLISECONDS;    /* Reset time*/
+			status_button = BUTTON_DOWN_PRESS;               
 		}
 		
 		else
@@ -125,10 +120,10 @@ void Evaluate_bounce_button(void)
 	else if((BUTTON_UP == BTN_ACTIVE) && (BUTTON_DOWN == BTN_INACTIVE) )
 	{		
 		lub_time_button++;	             /*Increases time to 10 milliseconds*/
-		if(lub_time_button>=TEN_MILLISECONDS)
+		if(lub_time_button >= TEN_MILLISECONDS)
 		{
-			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/
-			status_button=BUTTON_UP_PRESS;
+			lub_time_button = ZERO_MILLISECONDS;    /* Reset time*/
+			status_button = BUTTON_UP_PRESS;
 		}
 		
 		else
@@ -141,10 +136,10 @@ void Evaluate_bounce_button(void)
 	else if(ANTI_PINCH == BTN_ACTIVE)
 	{		
 		lub_time_button++;	             /*Increases time to 10 milliseconds*/
-		if(lub_time_button>=TEN_MILLISECONDS)
+		if(lub_time_button >= TEN_MILLISECONDS)
 		{
-			lub_time_button=ZERO_MILLISECONDS;    /* Reset time*/
-			status_button=SIGNAL_ANTIPINCH;
+			lub_time_button = ZERO_MILLISECONDS;    /* Reset time*/
+			status_button = SIGNAL_ANTIPINCH;
 		}
 		
 		else
@@ -155,7 +150,24 @@ void Evaluate_bounce_button(void)
 			
 	else
 	{
-		lub_time_button=ZERO_MILLISECONDS;       /* Reset time*/
-		status_button=BUTTON_DOWN_UNPRESS;
+		lub_time_button = ZERO_MILLISECONDS;       /* Reset time*/
+		status_button = BUTTON_DOWN_UNPRESS;
 	}
 }    /* End Evaluate_bounce_button*/
+
+
+
+/* Exported functions */
+/* ------------------ */
+/**************************************************************
+ *  Name                 :	Get_Status_button
+ *  Created by           :  Gilberto Ochoa
+ *  Description          :  
+ *  Parameters           :  void
+ *  Return               :  T_UBYTE status_button
+ *  Critical/explanation :  NO
+ **************************************************************/
+T_UBYTE Get_Status_button(void)
+{
+	return status_button;
+}

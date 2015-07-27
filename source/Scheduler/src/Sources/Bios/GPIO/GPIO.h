@@ -1,72 +1,62 @@
 /*============================================================================*/
-/*                        SV C BC SOFTWARE GROUP                              */
+/*                        Continental Automotive                              */
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        GPIO.h
-* version:          1.0
-* created_by:       Gilberto Ochoa
-* date_created:     Mon Jun 22 2015
+* C Source:         %GPIO.h%
+* Instance:         CES
+* %version:         1 %
+* %created_by:      Armando Villa %
+* %date_created:    Wed Jul  15
 *=============================================================================*/
-/* DESCRIPTION : Macro definitions for registers access and I/O handling      */
+/* DESCRIPTION : A GPIO Driver                                                */
 /*============================================================================*/
-/* FUNCTION COMMENT : Header of the GPIO.c file                               */
+/* FUNCTION COMMENT : A GPIO header designed to configurate the indiviual pin */
+/*                    or the complete port.                                   */
 /*                                                                            */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 22/06/2015  |                               | Gilberto Ochoa   */
-/*                                                                            */
+/*  1.0      | 15/08/2015  |                               | Armando Villa    */
+/* Integration under Continuus CM                                             */
 /*============================================================================*/
 
-#ifndef _GPIO_H        /*prevent duplicated includes*/
-#define _GPIO_H
+#ifndef GPIO_H                               /* To avoid double inclusion */
+#define GPIO_H
 
 /* Includes */
-
-/** Core modules */
-/** MCU derivative information */
-#include "MCU_derivative.h"
-
-
-/*-- Defines -----------------------------------------------------------------*/
-
-#define on 0
-#define off 1
-
-/****Embedded GPIO's****/
-
-#define _LED1      0
-#define _LED2      1
-#define _LED3      2
-#define _LED4      3
-#define _LED5      4
-#define _LED6      5
-#define _LED7      6
-#define _LED8      7
-#define _LED9      8
-#define _LED10      9 
-#define _LED_UP    10
-#define _LED_DOWN  11
-
-
-
-
-/** Set LED */ 
-#define LED_ON(channel)                     (SIU.GPDO[channel].B.PDO =  on)
-/** Clear LED */ 
-#define LED_OFF(channel)                    (SIU.GPDO[channel].B.PDO =  off)
-/** Toggle LED */ 
-#define LED_TOGGLE(channel)                 (SIU.GPDO[channel].B.PDO ^= off) 
+/* -------- */
+#include "MPC5606B.h"
+#include "GPIO_Types.h"
 
 /* Exported types and constants */
 /* ---------------------------- */
 
 /* Types definition */
 /* typedef */
+#define startA 0
+#define startB 16
+#define startC 32
+#define startD 48
+#define startE 64
+#define startF 80
+#define startG 96
+#define startH 122
+#define startI 138
 
+#define endA 15
+#define endB 31
+#define endC 47
+#define endD 63
+#define endE 79
+#define endF 95
+#define endG 121
+#define endH 137
+#define endI 140	
+
+#define COMPLETE_PORT 15
 
 /*==================================================*/ 
 /* Declaration of exported constants                */
@@ -101,14 +91,23 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void EmbIOs_Config(void);
+extern void GPIO_SetPin(T_UBYTE lub_port, T_UBYTE lub_pin, T_UBYTE lub_mode);
+
+extern void GPIO_SetPort(T_UBYTE lub_port, T_UBYTE lub_mode);
+
 
 /* Functions macros */
+
+#define HIGH(channel)       (SIU.GPDO[channel].B.PDO =  1) 
+
+#define LOW(channel)        (SIU.GPDO[channel].B.PDO =  0)
+
+#define TOGGLE(channel)     (SIU.GPDO[channel].B.PDO ^= 1)
 
 
 /* Exported defines */
 
 
-#endif /* _GPIO_H */
+#endif
 
-/*******************************************************************************/
+
