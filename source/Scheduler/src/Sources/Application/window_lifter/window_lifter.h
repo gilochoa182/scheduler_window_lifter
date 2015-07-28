@@ -87,8 +87,10 @@ typedef enum
 /* Functions prototypes */
 extern void State_Machine(void);
 extern void delay_5_seconds(void);
-T_UBYTE Get_LEDPosition(void);
-void Set_LEDPosition(T_UBYTE option);
+extern T_UBYTE Get_LEDPosition(void);
+extern void Set_LEDPosition(T_UBYTE option);
+extern T_UBYTE Get_rub_State(void);
+extern void Set_rub_State(StateMachineType option);
 
 /* Functions macros */
 

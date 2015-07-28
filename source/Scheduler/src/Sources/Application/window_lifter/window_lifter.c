@@ -98,6 +98,7 @@ void automatic_down(void);
 void aintipinch(void);
 void delay_5_seconds(void);
 void validation(void);
+void idle(void);
 
 
 /* Private functions */
@@ -115,7 +116,7 @@ void State_Machine(void)
 	switch(rub_State)
 	{
 		case IDLE:
-			rub_State = VALIDATION;
+			idle();
 			break;
 			
 		case VALIDATION:
@@ -226,6 +227,7 @@ void automatic_up(void)
 		
 		if(rub_LED_Position == TOTALLY_CLOSED)
 		{
+			
 			rub_State = IDLE;
 			rub_LED_Position = _LED1;
 			LED_OFF(_LED_UP);
@@ -455,6 +457,25 @@ void manual_down(void)
 
 
 
+/* Private functions */
+/* ----------------- */
+/**************************************************************
+ *  Name                 : idle
+ *  Created by           : Gilberto Ochoa
+ *  Description          : 
+ *  Parameters           : Void
+ *  Return               : Void
+ *  Critical/explanation : No
+ **************************************************************/
+void idle(void)
+{
+	LED_OFF(_LED_DOWN);
+	LED_OFF(_LED_UP);
+	rub_State = VALIDATION;
+}
+
+
+
 /* Exported functions */
 /* ------------------ */
 /**************************************************************
@@ -493,31 +514,31 @@ void Set_LEDPosition(T_UBYTE option)
 /* Exported functions */
 /* ------------------ */
 /**************************************************************
- *  Name                 :	Get_LEDPosition
+ *  Name                 :	Get_rub_State
  *  Created by           :  Gilberto Ochoa
  *  Description          :  
  *  Parameters           :  void
- *  Return               :  T_UBYTE rub_LED_Position
+ *  Return               :  T_UBYTE rub_State
  *  Critical/explanation :  NO
  **************************************************************/
-//T_UBYTE Get_LEDPosition(void)
-//{
-//	return rub_LED_Position;
-//}
+T_UBYTE Get_rub_State(void)
+{
+	return rub_State;
+}
 
 
 
 /* Exported functions */
 /* ------------------ */
 /**************************************************************
- *  Name                 :	Set_LEDPosition
+ *  Name                 :	Set_rub_State
  *  Created by           :  Gilberto Ochoa
  *  Description          :  
- *  Parameters           :  T_UBYTE option
+ *  Parameters           :  StateMachineType option
  *  Return               :  void
  *  Critical/explanation :  NO
  **************************************************************/
-//void Set_LEDPosition(T_UBYTE option)
-//{	
-//	rub_LED_Position = option;
-//}
+void Set_rub_State(StateMachineType option)
+{	
+	rub_State = option;
+}
