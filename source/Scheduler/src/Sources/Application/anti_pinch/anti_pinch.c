@@ -21,6 +21,7 @@ void aintipinch(void)
 	{
 		Set_LEDPosition(_LED10);
 		Set_rub_State(LOCK);
+		LED_OFF(_LED_DOWN);
 	}
 }   /*************** End function antipinch ***************/
 
